@@ -12,6 +12,11 @@ Only the no-dependency code will be imported by default. Each collection of
 code with a specific dependency is bundled under its own module (such as
 Django-specific code).
 
+* ``unstdlib.standard`` contains code that does not require additional
+dependencies on top of Python 2.5.
+* ``unstdlib.sqlalchemy`` (someday) contains code that is SQLAlchemy-specific.
+* ``unstdlib.django`` (someday) contains code that is Django-specific.
+
 We value simplicity and elegance over robustness and optimization. This library
 should serve as a good foundation for your own application-specific code
 instead of a complete framework. In other words, it is preferred to have a
@@ -22,7 +27,26 @@ long as expected usage is well documented.
 
 ## Highlights
 
-* *(TODO: List some of the most useful functions here.)*
+*(TODO: Format this better and select the most useful ones.)*
+
+* random_string(length=6, alphabet=string.letters+string.digits)
+* get_many(d, required=[], optional=[], one_of=[])
+* pop_many(d, keys, default=None)
+* groupby_count(i, key=None, force_keys=None)
+* groupby_dict(i, keyfunc=None)
+* iterate_date(start, stop=None, step=datetime.timedelta(days=1))
+* iterate_chunks(i, size=10)
+* iterate_flatten(q)
+* iterate_date_values(d, start_date=None, stop_date=None, default=0)
+* convert_exception(from_exception, to_exception, *to_args, **to_kw)
+* number_to_string(n, alphabet)
+* string_to_number(s, alphabet)
+* isoformat_as_datetime(s)
+* truncate_datetime(t, resolution)
+* validate(d, key, validator)
+* validate_many(d, schema)
+
+[Browse the unstdlib.standard code here](https://github.com/shazow/unstdlib.py/blob/master/unstdlib/standard/util.py).
 
 
 ## Contributors
