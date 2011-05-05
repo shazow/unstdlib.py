@@ -5,7 +5,7 @@ Have you ever written code that you used in more than one project? Me too.
 This is a compilation of highly-reusable code for Python.
 
 
-## Organization & Philosophu
+## Organization & Philosophy
 
 This library includes code with no dependencies and code with dependencies. Only the no-dependency code will be imported by default. Each collection of code with a specific dependency is bundled under its own module (such as Django-specific code).
 
