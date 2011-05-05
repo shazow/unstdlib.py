@@ -21,7 +21,7 @@ covers 100% of the use cases.
 
 ## Highlights
 
-* TODO: List some of the most useful functions here.
+* *(TODO: List some of the most useful functions here.)*
 
 
 ## Contributors
@@ -31,8 +31,7 @@ commonly reuse. If you feel your code will be useful to others, make sure that
 it is conforming to the spirit of the library outlined in the *Organization &
 Philosophy* section and send over a pull request.
 
-* [Full list of
-* contributors](https://github.com/shazow/unstdlib.py/contributors)
+* [Full list of contributors](https://github.com/shazow/unstdlib.py/contributors)
 
 
 ## License
