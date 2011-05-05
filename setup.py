@@ -10,7 +10,7 @@ except ImportError, _:
 version = '1.0'
 
 setup(name='unstdlib',
-    version='1.0',
+    version=version,
     description='Unstandard Python library of useful and highly-reusable functions',
     author='Andrey Petrov',
     author_email='andrey.petrov@shazow.net',
