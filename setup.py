@@ -21,7 +21,6 @@ setup(name='unstdlib',
 
     ``unstdlib`` is a compilation of highly-reusable code for Python.
     """.strip(),
-    download_url="https://github.com/shazow/unstdlib.py/tarball/v%s" % version,
     license="MIT",
     platforms=["any"],
 )
