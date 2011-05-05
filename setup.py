@@ -1,12 +1,9 @@
 #!/usr/bin/env python
 
-# ...
-
 from distutils.core import setup
-from web import __version__
 
 setup(name='unstdlib.py',
-    version=__version__,
+    version='1.0',
     description='Unstandard Python library of useful and highly-reusable functions',
     author='Andrey Petrov',
     author_email='andrey.petrov@shazow.net',
