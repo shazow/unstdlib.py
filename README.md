@@ -16,7 +16,7 @@ Use it in your code:
 
     # ...
 
-    user_id, sort_by, page_num = get_many(request.params, ['user_id'], optional['sort_by', 'page_num'])
+    user_id, sort_by, page_num = get_many(request.params, ['user_id'], optional=['sort_by', 'page_num'])
 
     # ...
     data_by_tags = groupby_dict(data, keyfunc=lambda o: o.tag)
