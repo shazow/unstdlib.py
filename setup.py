@@ -7,6 +7,8 @@ try:
 except ImportError, _:
     pass # No 'develop' command, oh well.
 
+version = '1.0'
+
 setup(name='unstdlib',
     version='1.0',
     description='Unstandard Python library of useful and highly-reusable functions',
@@ -19,6 +21,7 @@ setup(name='unstdlib',
 
     ``unstdlib`` is a compilation of highly-reusable code for Python.
     """.strip(),
+    download_url="https://github.com/shazow/unstdlib.py/tarball/v%s" % version,
     license="MIT",
     platforms=["any"],
 )
