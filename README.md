@@ -16,7 +16,8 @@ We value simplicity and elegance over robustness and optimization. This library
 should serve as a good foundation for your own application-specific code
 instead of a complete framework. In other words, it is preferred to have a
 2-line function that covers 80% of use cases than a 20-line function that
-covers 100% of the use cases.
+covers 100% of the use cases. Unexpected behaviour on bad input is fine as
+long as expected usage is well documented.
 
 
 ## Highlights
