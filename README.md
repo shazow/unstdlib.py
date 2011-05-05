@@ -29,22 +29,22 @@ long as expected usage is well documented.
 
 *(TODO: Format this better and select the most useful ones.)*
 
-* random_string(length=6, alphabet=string.letters+string.digits)
-* get_many(d, required=[], optional=[], one_of=[])
-* pop_many(d, keys, default=None)
-* groupby_count(i, key=None, force_keys=None)
-* groupby_dict(i, keyfunc=None)
-* iterate_date(start, stop=None, step=datetime.timedelta(days=1))
-* iterate_chunks(i, size=10)
-* iterate_flatten(q)
-* iterate_date_values(d, start_date=None, stop_date=None, default=0)
-* convert_exception(from_exception, to_exception, *to_args, **to_kw)
-* number_to_string(n, alphabet)
-* string_to_number(s, alphabet)
-* isoformat_as_datetime(s)
-* truncate_datetime(t, resolution)
-* validate(d, key, validator)
-* validate_many(d, schema)
+* ``random_string(length=6, alphabet=string.letters+string.digits)``
+* ``get_many(d, required=[], optional=[], one_of=[])``
+* ``pop_many(d, keys, default=None)``
+* ``groupby_count(i, key=None, force_keys=None)``
+* ``groupby_dict(i, keyfunc=None)``
+* ``iterate_date(start, stop=None, step=datetime.timedelta(days=1))``
+* ``iterate_chunks(i, size=10)``
+* ``iterate_flatten(q)``
+* ``iterate_date_values(d, start_date=None, stop_date=None, default=0)``
+* ``convert_exception(from_exception, to_exception, *to_args, **to_kw)``
+* ``number_to_string(n, alphabet)``
+* ``string_to_number(s, alphabet)``
+* ``isoformat_as_datetime(s)``
+* ``truncate_datetime(t, resolution)``
+* ``validate(d, key, validator)``
+* ``validate_many(d, schema)``
 
 [Browse the unstdlib.standard code here](https://github.com/shazow/unstdlib.py/blob/master/unstdlib/standard/util.py).
 
