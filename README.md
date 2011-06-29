@@ -51,7 +51,7 @@ Use it in your code:
 * ``validate(d, key, validator)``
 * ``validate_many(d, schema)``
 
-### [:unstdlib.sqlalchemy](https://github.com/shazow/unstdlib.py/blob/master/unstdlib/sqlalchemy/)
+### [unstdlib.sqlalchemy](https://github.com/shazow/unstdlib.py/blob/master/unstdlib/sqlalchemy/)
 
 * ``enumerate_query_by_limit(q, limit=1000)``
 
