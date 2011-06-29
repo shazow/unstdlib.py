@@ -29,7 +29,7 @@ Use it in your code:
 
 *(TODO: Format this better and select the most useful ones.)*
 
-### Standard
+### [unstdlib.standard](https://github.com/shazow/unstdlib.py/blob/master/unstdlib/standard/)
 
 * ``random_string(length=6, alphabet=string.letters+string.digits)``
 * ``get_many(d, required=[], optional=[], one_of=[])``
@@ -46,15 +46,12 @@ Use it in your code:
 * ``isoformat_as_datetime(s)``
 * ``truncate_datetime(t, resolution)``
 
-[Browse the unstdlib.standard code here](https://github.com/shazow/unstdlib.py/blob/master/unstdlib/standard/).
-
-
-### Formencode
+### [unstdlib.formencode](https://github.com/shazow/unstdlib.py/blob/master/unstdlib/formencode/)
 
 * ``validate(d, key, validator)``
 * ``validate_many(d, schema)``
 
-### SQLAlchemy
+### [:unstdlib.sqlalchemy](https://github.com/shazow/unstdlib.py/blob/master/unstdlib/sqlalchemy/)
 
 * ``enumerate_query_by_limit(q, limit=1000)``
 
