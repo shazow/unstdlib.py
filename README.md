@@ -29,6 +29,8 @@ Use it in your code:
 
 *(TODO: Format this better and select the most useful ones.)*
 
+### Standard
+
 * ``random_string(length=6, alphabet=string.letters+string.digits)``
 * ``get_many(d, required=[], optional=[], one_of=[])``
 * ``pop_many(d, keys, default=None)``
@@ -43,10 +45,18 @@ Use it in your code:
 * ``string_to_number(s, alphabet)``
 * ``isoformat_as_datetime(s)``
 * ``truncate_datetime(t, resolution)``
+
+[Browse the unstdlib.standard code here](https://github.com/shazow/unstdlib.py/blob/master/unstdlib/standard/).
+
+
+### Formencode
+
 * ``validate(d, key, validator)``
 * ``validate_many(d, schema)``
 
-[Browse the unstdlib.standard code here](https://github.com/shazow/unstdlib.py/blob/master/unstdlib/standard/util.py).
+### SQLAlchemy
+
+* ``enumerate_query_by_limit(q, limit=1000)``
 
 
 ## Organization & Philosophy
