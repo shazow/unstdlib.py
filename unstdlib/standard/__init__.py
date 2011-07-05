@@ -306,7 +306,7 @@ def to_str(obj, encoding=None, errors=None):
         >>> to_str(some_exception)
         'Error: \xe1\x88\xb4'
 
-    See source code for detailed symantics.
+    See source code for detailed semantics.
     """
     encoding = encoding or 'utf-8'
     errors = errors or 'strict'
