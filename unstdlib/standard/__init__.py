@@ -309,6 +309,7 @@ def to_str(obj, encoding=None, errors=None):
     See source code for detailed symantics.
     """
     encoding = encoding or 'utf-8'
+    errors = errors or 'strict'
 
     # We coerce to unicode if '__unicode__' is available because there is no
     # way to specify encoding when calling ``str(obj)``, so, eg,
@@ -336,9 +337,9 @@ def to_unicode(obj, encoding=None, fallback=None, errors=None):
         >>> to_unicode(u'\u1234')
         u'\u1234'
     """
-
     encoding = encoding or 'utf-8'
     fallback = fallback or 'latin1'
+    errors = errors or 'strict'
 
     try:
         return unicode(obj, encoding, errors)
