@@ -14,6 +14,7 @@ __all__ = [
     'convert_exception',
     'number_to_string', 'string_to_number',
     'isoformat_as_datetime', 'truncate_datetime',
+    'to_str', 'to_unicode',
 ]
 
 
