@@ -289,3 +289,57 @@ def truncate_datetime(t, resolution):
             break
 
     return datetime.datetime(*args)
+
+def to_str(obj, encoding=None, errors=None):
+    """
+    Returns a ``str`` of ``obj``, encoding using ``encoding`` if necessary.
+    ``errors`` is passed directly to ``unicode.encode``. For example::
+
+        >>> some_str = "\xff"
+        >>> some_unicode = u"\u1234"
+        >>> some_exception = Exception(u'Error: ' + some_unicode)
+        >>> to_str(some_str)
+        '\xff'
+        >>> to_str(some_unicode)
+        '\xe1\x88\xb4'
+        >>> to_str(some_exception)
+        'Error: \xe1\x88\xb4'
+
+    See source code for detailed symantics.
+    """
+    encoding = encoding or 'utf-8'
+
+    # We coerce to unicode if '__unicode__' is available because there is no
+    # way to specify encoding when calling ``str(obj)``, so, eg,
+    # ``str(Exception(u'\u1234'))`` will explode.
+    if isinstance(obj, unicode) or hasattr(obj, "__unicode__"):
+        # Note: unicode(u'foo') is O(1) (by experimentation)
+        return unicode(obj).encode(encoding, errors)
+
+    # Note: it's just as fast to do `if isinstance(obj, str): return obj` as it
+    # is to simply return `str(obj)`.
+    return str(obj)
+
+def to_unicode(obj, encoding=None, fallback=None, errors=None):
+    """
+    Returns a ``unicode`` of ``obj``, decoding using ``encoding`` if necessary.
+    ``errors`` is passed directly to ``unicode.encode``. If decoding fails, the
+    ``fallback`` encoding (default ``latin1``) is used.
+    
+    For example::
+
+        >>> to_unicode('\xe1\x88\xb4')
+        u'\u1234'
+        >>> to_unicode('\xff')
+        u'\xff'
+        >>> to_unicode(u'\u1234')
+        u'\u1234'
+    """
+
+    encoding = encoding or 'utf-8'
+    fallback = fallback or 'latin1'
+
+    try:
+        return unicode(obj, encoding, errors)
+    except UnicodeDecodeError:
+        return unicode(obj, fallback, errors)
