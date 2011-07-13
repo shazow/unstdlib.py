@@ -209,7 +209,7 @@ def number_to_string(n, alphabet):
         'babbbbaaabbaaaababaabbba'
 
         >>> number_to_string(12345678, string.letters + string.digits)
-        'ZXP0
+        'ZXP0'
 
         >>> number_to_string(12345, ['zero ', 'one ', 'two ', 'three ', 'four ', 'five ', 'six ', 'seven ', 'eight ', 'nine '])
         'one two three four five '
@@ -272,10 +272,14 @@ def truncate_datetime(t, resolution):
         >>> t = datetime.datetime(2000, 1, 2, 3, 4, 5, 6000) # Or, 2000-01-02 03:04:05.006000
 
         >>> truncate_datetime(t, 'day')
-        datetime.datetime(2000, 1, 2, 0, 0) # Or, 2000-01-02 00:00:00
+        datetime.datetime(2000, 1, 2, 0, 0)
+        >>> _.isoformat()
+        '2000-01-02T00:00:00'
 
         >>> truncate_datetime(t, 'minute')
-        datetime.datetime(2000, 1, 2, 3, 4) # Or, 2000-01-02 03:04:00
+        datetime.datetime(2000, 1, 2, 3, 4)
+        >>> _.isoformat()
+        '2000-01-02T03:04:00'
 
     """
 
@@ -292,7 +296,7 @@ def truncate_datetime(t, resolution):
     return datetime.datetime(*args)
 
 def to_str(obj, encoding='utf-8', **encode_args):
-    """
+    r"""
     Returns a ``str`` of ``obj``, encoding using ``encoding`` if necessary. For
     example::
 
@@ -305,6 +309,8 @@ def to_str(obj, encoding='utf-8', **encode_args):
         '\xe1\x88\xb4'
         >>> to_str(some_exception)
         'Error: \xe1\x88\xb4'
+        >>> to_str([u'\u1234', 42])
+        "[u'\\u1234', 42]"
 
     See source code for detailed semantics.
     """
@@ -320,7 +326,7 @@ def to_str(obj, encoding='utf-8', **encode_args):
     return str(obj)
 
 def to_unicode(obj, encoding='utf-8', fallback='latin1', **decode_args):
-    """
+    r"""
     Returns a ``unicode`` of ``obj``, decoding using ``encoding`` if necessary.
     If decoding fails, the ``fallback`` encoding (default ``latin1``) is used.
     
@@ -332,9 +338,24 @@ def to_unicode(obj, encoding='utf-8', fallback='latin1', **decode_args):
         u'\xff'
         >>> to_unicode(u'\u1234')
         u'\u1234'
+        >>> to_unicode(Exception(u'\u1234'))
+        u'\u1234'
+        >>> to_unicode([u'\u1234', 42])
+        u"[u'\\u1234', 42]"
+
+    See source code for detailed semantics.
     """
 
+    if isinstance(obj, unicode) or hasattr(obj, "__unicode__"):
+        return unicode(obj)
+
+    obj_str = str(obj)
     try:
-        return unicode(obj, encoding, **decode_args)
+        return unicode(obj_str, encoding, **decode_args)
     except UnicodeDecodeError:
-        return unicode(obj, fallback, **decode_args)
+        return unicode(obj_str, fallback, **decode_args)
+
+
+if __name__ == "__main__":
+    import doctest
+    doctest.testmod(optionflags=doctest.ELLIPSIS)
