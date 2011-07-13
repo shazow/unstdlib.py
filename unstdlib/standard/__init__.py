@@ -291,10 +291,10 @@ def truncate_datetime(t, resolution):
 
     return datetime.datetime(*args)
 
-def to_str(obj, encoding=None, errors=None):
+def to_str(obj, encoding='utf-8', **encode_args):
     """
-    Returns a ``str`` of ``obj``, encoding using ``encoding`` if necessary.
-    ``errors`` is passed directly to ``unicode.encode``. For example::
+    Returns a ``str`` of ``obj``, encoding using ``encoding`` if necessary. For
+    example::
 
         >>> some_str = "\xff"
         >>> some_unicode = u"\u1234"
@@ -308,25 +308,21 @@ def to_str(obj, encoding=None, errors=None):
 
     See source code for detailed semantics.
     """
-    encoding = encoding or 'utf-8'
-    errors = errors or 'strict'
-
     # We coerce to unicode if '__unicode__' is available because there is no
     # way to specify encoding when calling ``str(obj)``, so, eg,
     # ``str(Exception(u'\u1234'))`` will explode.
     if isinstance(obj, unicode) or hasattr(obj, "__unicode__"):
         # Note: unicode(u'foo') is O(1) (by experimentation)
-        return unicode(obj).encode(encoding, errors)
+        return unicode(obj).encode(encoding, **encode_args)
 
     # Note: it's just as fast to do `if isinstance(obj, str): return obj` as it
     # is to simply return `str(obj)`.
     return str(obj)
 
-def to_unicode(obj, encoding=None, fallback=None, errors=None):
+def to_unicode(obj, encoding='utf-8', fallback='latin1', **decode_args):
     """
     Returns a ``unicode`` of ``obj``, decoding using ``encoding`` if necessary.
-    ``errors`` is passed directly to ``unicode.encode``. If decoding fails, the
-    ``fallback`` encoding (default ``latin1``) is used.
+    If decoding fails, the ``fallback`` encoding (default ``latin1``) is used.
     
     For example::
 
@@ -337,11 +333,8 @@ def to_unicode(obj, encoding=None, fallback=None, errors=None):
         >>> to_unicode(u'\u1234')
         u'\u1234'
     """
-    encoding = encoding or 'utf-8'
-    fallback = fallback or 'latin1'
-    errors = errors or 'strict'
 
     try:
-        return unicode(obj, encoding, errors)
+        return unicode(obj, encoding, **decode_args)
     except UnicodeDecodeError:
-        return unicode(obj, fallback, errors)
+        return unicode(obj, fallback, **decode_args)
