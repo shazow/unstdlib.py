@@ -14,6 +14,7 @@ __all__ = [
     'convert_exception',
     'number_to_string', 'string_to_number',
     'isoformat_as_datetime', 'truncate_datetime',
+    'to_str', 'to_unicode',
 ]
 
 
@@ -208,7 +209,7 @@ def number_to_string(n, alphabet):
         'babbbbaaabbaaaababaabbba'
 
         >>> number_to_string(12345678, string.letters + string.digits)
-        'ZXP0
+        'ZXP0'
 
         >>> number_to_string(12345, ['zero ', 'one ', 'two ', 'three ', 'four ', 'five ', 'six ', 'seven ', 'eight ', 'nine '])
         'one two three four five '
@@ -271,10 +272,14 @@ def truncate_datetime(t, resolution):
         >>> t = datetime.datetime(2000, 1, 2, 3, 4, 5, 6000) # Or, 2000-01-02 03:04:05.006000
 
         >>> truncate_datetime(t, 'day')
-        datetime.datetime(2000, 1, 2, 0, 0) # Or, 2000-01-02 00:00:00
+        datetime.datetime(2000, 1, 2, 0, 0)
+        >>> _.isoformat()
+        '2000-01-02T00:00:00'
 
         >>> truncate_datetime(t, 'minute')
-        datetime.datetime(2000, 1, 2, 3, 4) # Or, 2000-01-02 03:04:00
+        datetime.datetime(2000, 1, 2, 3, 4)
+        >>> _.isoformat()
+        '2000-01-02T03:04:00'
 
     """
 
@@ -289,3 +294,68 @@ def truncate_datetime(t, resolution):
             break
 
     return datetime.datetime(*args)
+
+def to_str(obj, encoding='utf-8', **encode_args):
+    r"""
+    Returns a ``str`` of ``obj``, encoding using ``encoding`` if necessary. For
+    example::
+
+        >>> some_str = "\xff"
+        >>> some_unicode = u"\u1234"
+        >>> some_exception = Exception(u'Error: ' + some_unicode)
+        >>> to_str(some_str)
+        '\xff'
+        >>> to_str(some_unicode)
+        '\xe1\x88\xb4'
+        >>> to_str(some_exception)
+        'Error: \xe1\x88\xb4'
+        >>> to_str([u'\u1234', 42])
+        "[u'\\u1234', 42]"
+
+    See source code for detailed semantics.
+    """
+    # We coerce to unicode if '__unicode__' is available because there is no
+    # way to specify encoding when calling ``str(obj)``, so, eg,
+    # ``str(Exception(u'\u1234'))`` will explode.
+    if isinstance(obj, unicode) or hasattr(obj, "__unicode__"):
+        # Note: unicode(u'foo') is O(1) (by experimentation)
+        return unicode(obj).encode(encoding, **encode_args)
+
+    # Note: it's just as fast to do `if isinstance(obj, str): return obj` as it
+    # is to simply return `str(obj)`.
+    return str(obj)
+
+def to_unicode(obj, encoding='utf-8', fallback='latin1', **decode_args):
+    r"""
+    Returns a ``unicode`` of ``obj``, decoding using ``encoding`` if necessary.
+    If decoding fails, the ``fallback`` encoding (default ``latin1``) is used.
+    
+    For example::
+
+        >>> to_unicode('\xe1\x88\xb4')
+        u'\u1234'
+        >>> to_unicode('\xff')
+        u'\xff'
+        >>> to_unicode(u'\u1234')
+        u'\u1234'
+        >>> to_unicode(Exception(u'\u1234'))
+        u'\u1234'
+        >>> to_unicode([u'\u1234', 42])
+        u"[u'\\u1234', 42]"
+
+    See source code for detailed semantics.
+    """
+
+    if isinstance(obj, unicode) or hasattr(obj, "__unicode__"):
+        return unicode(obj)
+
+    obj_str = str(obj)
+    try:
+        return unicode(obj_str, encoding, **decode_args)
+    except UnicodeDecodeError:
+        return unicode(obj_str, fallback, **decode_args)
+
+
+if __name__ == "__main__":
+    import doctest
+    doctest.testmod(optionflags=doctest.ELLIPSIS)
