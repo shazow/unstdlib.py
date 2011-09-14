@@ -15,7 +15,7 @@ setup(name='unstdlib',
     author='Andrey Petrov',
     author_email='andrey.petrov@shazow.net',
     url='https://github.com/shazow/unstdlib.py',
-    packages=['unstdlib', 'unstdlib.standard'],
+    packages=['unstdlib'],
     long_description="""
     Have you ever written code that you used in more than one project? Me too.
 
