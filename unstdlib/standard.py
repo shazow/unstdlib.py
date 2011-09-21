@@ -295,6 +295,7 @@ def truncate_datetime(t, resolution):
 
     return datetime.datetime(*args)
 
+
 def to_str(obj, encoding='utf-8', **encode_args):
     r"""
     Returns a ``str`` of ``obj``, encoding using ``encoding`` if necessary. For
@@ -325,11 +326,12 @@ def to_str(obj, encoding='utf-8', **encode_args):
     # is to simply return `str(obj)`.
     return str(obj)
 
+
 def to_unicode(obj, encoding='utf-8', fallback='latin1', **decode_args):
     r"""
     Returns a ``unicode`` of ``obj``, decoding using ``encoding`` if necessary.
     If decoding fails, the ``fallback`` encoding (default ``latin1``) is used.
-    
+
     For example::
 
         >>> to_unicode('\xe1\x88\xb4')
