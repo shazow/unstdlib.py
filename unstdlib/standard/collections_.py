@@ -113,3 +113,26 @@ class RecentlyUsedContainer(MutableMapping):
 
     def __contains__(self, key):
         return self._container.__contains__(key)
+
+
+class MultiDict(MutableMapping):
+    def __init__(self, d, **kw):
+        self._container = {}
+
+    def __getitem__(self, key):
+        pass
+
+    def __setitem__(self, key, item):
+        pass
+
+    def __delitem__(self, key):
+        pass
+
+    def __len__(self):
+        pass
+
+    def __iter__(self):
+        pass
+
+    def __contains__(self, key):
+        pass
