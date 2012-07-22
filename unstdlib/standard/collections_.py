@@ -27,8 +27,6 @@ class RecentlyUsedContainer(dict):
     def __init__(self, maxsize=10):
         self._maxsize = maxsize
 
-        self._container = {}
-
         # We use a deque to to store our keys ordered by the last access.
         self.access_log = deque()
         self.access_log_lock = RLock()
