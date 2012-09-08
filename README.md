@@ -27,7 +27,7 @@ Use it in your code:
 
 ## Highlights
 
-*(TODO: Format this better and select the most useful ones.)*
+*(TODO: Format this better and select the most useful ones. Maybe use readthedocs.org?)*
 
 ### [unstdlib.standard](https://github.com/shazow/unstdlib.py/blob/master/unstdlib/standard/)
 
@@ -46,14 +46,25 @@ Use it in your code:
 * ``isoformat_as_datetime(s)``
 * ``truncate_datetime(t, resolution)``
 
-### [unstdlib.formencode](https://github.com/shazow/unstdlib.py/blob/master/unstdlib/formencode/)
+### [unstdlib.formencode](https://github.com/shazow/unstdlib.py/blob/master/unstdlib/formencode.py)
 
 * ``validate(d, key, validator)``
 * ``validate_many(d, schema)``
 
-### [unstdlib.sqlalchemy](https://github.com/shazow/unstdlib.py/blob/master/unstdlib/sqlalchemy/)
+### [unstdlib.sqlalchemy](https://github.com/shazow/unstdlib.py/blob/master/unstdlib/sqlalchemy.py)
 
 * ``enumerate_query_by_limit(q, limit=1000)``
+
+### [unstdlib.timezone](https://github.com/shazow/unstdlib.py/blob/master/unstdlib/timezone.py)
+
+* ``utcnow()``
+* ``localnow(timezone)``
+* ``localfromutc(utc_dt, timezone)``
+* ``utcfromlocal(local_dt, timezone)``
+* ``utcfromtimestamp(timestamp)``
+* ``timestampfromutc(dt)``
+* ``utcfromiso(dt)``
+* ``isofromutc(dt)``
 
 
 ## Organization & Philosophy
