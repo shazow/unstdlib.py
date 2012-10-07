@@ -32,8 +32,8 @@ def groupby_count(i, key=None, force_keys=None):
 
 def is_iterable(maybe_iter, unless=(basestring, dict)):
     """
-    Return whether `maybe_iter` is an iterable, unless it's an instance of one
-    of the given base classes in `unless`.
+    Return whether ``maybe_iter`` is an iterable, unless it's an instance of one
+    of the given base classes in ``unless``.
 
     >>> is_iterable('foo')
     False
@@ -51,9 +51,9 @@ def iterate(maybe_iter, unless=(basestring, dict)):
     """
     Always return an iterable.
 
-    Return an iterable over `maybe_iter` unless `maybe_iter` is an instance of
-    base classes defined in `unless`, then it returns a single-element iterable
-    of `maybe_iter`.
+    Return an iterable over ``maybe_iter`` unless ``maybe_iter`` is an instance
+    of base classes defined in ``unless``, then it returns a single-element
+    iterable of ``maybe_iter``.
 
     Example::
 
