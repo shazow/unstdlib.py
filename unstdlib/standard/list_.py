@@ -33,7 +33,7 @@ def groupby_count(i, key=None, force_keys=None):
 def is_iterable(maybe_iter, unless=(basestring, dict)):
     """
     Return whether ``maybe_iter`` is an iterable, unless it's an instance of one
-    of the given base classes in ``unless``.
+    of the base class, or tuple of base classes, given in ``unless``.
 
     >>> is_iterable('foo')
     False
