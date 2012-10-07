@@ -1,11 +1,14 @@
 import random
+import re
 import string
+import unicodedata
 
 
 __all__ = [
     'random_string',
     'number_to_string', 'string_to_number',
     'to_str', 'to_unicode',
+    'sluggify',
 ]
 
 
@@ -138,6 +141,16 @@ def to_unicode(obj, encoding='utf-8', fallback='latin1', **decode_args):
         return unicode(obj_str, encoding, **decode_args)
     except UnicodeDecodeError:
         return unicode(obj_str, fallback, **decode_args)
+
+
+RE_SLUG = re.compile(r'\W+')
+
+def slugify(s, delimiter='-'):
+    """
+    Normalize `s` into ASCII and replace non-word characters with `delimiter`.
+    """
+    s = unicodedata.normalize('NFKD', s).encode('ascii', 'ignore').decode('ascii')
+    return RE_SLUG.sub(delimiter, s).strip(delimiter).lower()
 
 
 if __name__ == "__main__":
