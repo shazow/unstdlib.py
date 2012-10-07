@@ -51,7 +51,6 @@ Use it in your code:
 * ``now(timezone=None)``
 * ``slugify(s, delimiter='-')``
 * ``@listify(fn=None, wrapper=list)``
-* ``is_subclass(o, bases)``
 
 ### [unstdlib.formencode](https://github.com/shazow/unstdlib.py/blob/master/unstdlib/formencode/)
 
