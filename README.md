@@ -36,9 +36,12 @@ Use it in your code:
 * ``pop_many(d, keys, default=None)``
 * ``groupby_count(i, key=None, force_keys=None)``
 * ``groupby_dict(i, keyfunc=None)``
-* ``iterate_date(start, stop=None, step=datetime.timedelta(days=1))``
+* ``is_subclass(o, bases)``
+* ``is_iterable(maybe_iter, unless=(basestring, dict))``
+* ``iterate(maybe_iter, unless=(basestring, dict))``
 * ``iterate_chunks(i, size=10)``
 * ``iterate_flatten(q)``
+* ``iterate_date(start, stop=None, step=datetime.timedelta(days=1))``
 * ``iterate_date_values(d, start_date=None, stop_date=None, default=0)``
 * ``convert_exception(from_exception, to_exception, *to_args, **to_kw)``
 * ``number_to_string(n, alphabet)``
