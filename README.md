@@ -45,6 +45,9 @@ Use it in your code:
 * ``string_to_number(s, alphabet)``
 * ``isoformat_as_datetime(s)``
 * ``truncate_datetime(t, resolution)``
+* ``now(timezone=None)``
+* ``slugify(s, delimiter='-')``
+* ``@listify(fn=None, wrapper=list)``
 
 ### [unstdlib.formencode](https://github.com/shazow/unstdlib.py/blob/master/unstdlib/formencode/)
 

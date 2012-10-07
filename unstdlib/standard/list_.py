@@ -68,7 +68,7 @@ def iterate_flatten(q):
     return chain.from_iterable(q)
 
 
-def listify(f=None, wrapper=list):
+def listify(fn=None, wrapper=list):
     """
     A decorator which wraps a function's return value in ``list(...)``.
 
@@ -91,14 +91,14 @@ def listify(f=None, wrapper=list):
         >>> get_lengths_tuple(["foo", "bar"])
         (3, 3)
     """
-    def listify_return(f):
-        @wraps(f)
+    def listify_return(fn):
+        @wraps(fn)
         def listify_helper(*args, **kwargs):
-            return wrapper(f(*args, **kwargs))
+            return wrapper(fn(*args, **kwargs))
         return listify_helper
-    if f is None:
+    if fn is None:
         return listify_return
-    return listify_return(f)
+    return listify_return(fn)
 
 
 if __name__ == "__main__":
