@@ -30,6 +30,47 @@ def groupby_count(i, key=None, force_keys=None):
     return counter.items()
 
 
+def is_iterable(maybe_iter, unless=(basestring, dict)):
+    """
+    Return whether `maybe_iter` is an iterable, unless it's an instance of one
+    of the given base classes in `unless`.
+
+    >>> is_iterable('foo')
+    False
+    >>> is_iterable(['foo'])
+    True
+    >>> is_iterable(['foo'], unless=list)
+    False
+    >>> is_iterable(xrange(5))
+    True
+    """
+    return hasattr(maybe_iter, '__iter__') and not isinstance(maybe_iter, unless)
+
+
+def iterate(maybe_iter, unless=(basestring, dict)):
+    """
+    Always return an iterable.
+
+    Return an iterable over `maybe_iter` unless `maybe_iter` is an instance of
+    base classes defined in `unless`, then it returns a single-element iterable
+    of `maybe_iter`.
+
+    Example::
+
+    >>> list(iterate('foo'))
+    ['foo']
+    >>> list(iterate(['foo']))
+    ['foo']
+    >>> list(iterate(['foo'], unless=list))
+    [['foo']]
+    >>> list(iterate(xrange(5)))
+    [0, 1, 2, 3, 4]
+    """
+    if is_iterable(maybe_iter, unless=unless):
+        return maybe_iter
+    return maybe_iter
+
+
 def iterate_chunks(i, size=10):
     """
     Iterate over an iterator ``i`` in ``size`` chunks, yield chunks.
