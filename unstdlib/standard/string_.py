@@ -8,7 +8,7 @@ __all__ = [
     'random_string',
     'number_to_string', 'string_to_number',
     'to_str', 'to_unicode',
-    'sluggify',
+    'slugify',
 ]
 
 
