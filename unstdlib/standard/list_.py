@@ -57,18 +57,18 @@ def iterate(maybe_iter, unless=(basestring, dict)):
 
     Example::
 
-    >>> list(iterate('foo'))
+    >>> iterate('foo')
     ['foo']
-    >>> list(iterate(['foo']))
+    >>> iterate(['foo'])
     ['foo']
-    >>> list(iterate(['foo'], unless=list))
+    >>> iterate(['foo'], unless=list)
     [['foo']]
     >>> list(iterate(xrange(5)))
     [0, 1, 2, 3, 4]
     """
     if is_iterable(maybe_iter, unless=unless):
         return maybe_iter
-    return maybe_iter
+    return [maybe_iter]
 
 
 def iterate_chunks(i, size=10):
