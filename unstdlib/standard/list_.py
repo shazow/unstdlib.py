@@ -5,7 +5,7 @@ from collections import defaultdict
 
 __all__ = [
     'groupby_count',
-    'iterate_chunks', 'iterate_flatten',
+    'iterate', 'is_iterable', 'iterate_chunks', 'iterate_flatten',
     'listify',
 ]
 
@@ -28,6 +28,55 @@ def groupby_count(i, key=None, force_keys=None):
             counter[k] += 0
 
     return counter.items()
+
+
+def is_iterable(maybe_iter, unless=(basestring, dict)):
+    """
+    Return whether ``maybe_iter`` is an iterable, unless it's an instance of one
+    of the base class, or tuple of base classes, given in ``unless``.
+
+    >>> is_iterable('foo')
+    False
+    >>> is_iterable(['foo'])
+    True
+    >>> is_iterable(['foo'], unless=list)
+    False
+    >>> is_iterable(xrange(5))
+    True
+    """
+    return hasattr(maybe_iter, '__iter__') and not isinstance(maybe_iter, unless)
+
+
+def iterate(maybe_iter, unless=(basestring, dict)):
+    """
+    Always return an iterable.
+
+    Returns ``maybe_iter`` if it is an iterable, otherwise it returns a single
+    element iterable containing ``maybe_iter``. By default, strings and dicts
+    are treated as non-iterable. This can be overridden by passing in a type
+    or tuple of types for ``unless``.
+
+    :param maybe_iter:
+        A value to return as an iterable.
+
+    :param unless:
+        A type or tuple of types (same as ``isinstance``) to be treated as
+        non-iterable.
+
+    Example::
+
+    >>> iterate('foo')
+    ['foo']
+    >>> iterate(['foo'])
+    ['foo']
+    >>> iterate(['foo'], unless=list)
+    [['foo']]
+    >>> list(iterate(xrange(5)))
+    [0, 1, 2, 3, 4]
+    """
+    if is_iterable(maybe_iter, unless=unless):
+        return maybe_iter
+    return [maybe_iter]
 
 
 def iterate_chunks(i, size=10):
