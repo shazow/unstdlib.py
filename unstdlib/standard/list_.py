@@ -51,9 +51,17 @@ def iterate(maybe_iter, unless=(basestring, dict)):
     """
     Always return an iterable.
 
-    Return an iterable over ``maybe_iter`` unless ``maybe_iter`` is an instance
-    of base classes defined in ``unless``, then it returns a single-element
-    iterable of ``maybe_iter``.
+    Returns ``maybe_iter`` if it is an iterable, otherwise it returns a single
+    element iterable containing ``maybe_iter``. By default, strings and dicts
+    are treated as non-iterable. This can be overridden by passing in a type
+    or tuple of types for ``unless``.
+
+    :param maybe_iter:
+        A value to return as an iterable.
+
+    :param unless:
+        A type or tuple of types (same as ``isinstance``) to be treated as
+        non-iterable.
 
     Example::
 
