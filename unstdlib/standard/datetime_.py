@@ -79,6 +79,49 @@ def truncate_datetime(t, resolution):
     return datetime.datetime(*args)
 
 
+def now(timezone=None):
+    """
+    Return a datetime object for the given `timezone`. A `timezone` is any pytz-
+    like or datetime.tzinfo-like timezone object. If no timezone is given, then
+    UTC is assumed.
+
+    This method is best used with pytz installed:
+
+        pip install pytz
+    """
+    d = datetime.datetime.utcnow()
+    if not timezone:
+        return d
+
+    d = d.replace(tzinfo=_UTC)
+    d = timezone.normalize(d.astimezone(timezone))
+    return d.replace(tzinfo=None)
+
+
+# Built-in timezone for when pytz isn't available:
+
+_ZERO = datetime.timedelta(0)
+
+class _UTC(datetime.tzinfo):
+    """
+    UTC implementation taken from Python's docs.
+
+    Use only when pytz isn't available.
+    """
+
+    def __repr__(self):
+        return "<UTC>"
+
+    def utcoffset(self, dt):
+        return _ZERO
+
+    def tzname(self, dt):
+        return "UTC"
+
+    def dst(self, dt):
+        return _ZERO
+
+
 if __name__ == "__main__":
     import doctest
     doctest.testmod(optionflags=doctest.ELLIPSIS)
