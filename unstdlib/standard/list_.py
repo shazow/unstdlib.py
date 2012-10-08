@@ -46,9 +46,9 @@ def is_iterable(maybe_iter, unless=(basestring, dict)):
     """
     try:
         iter(maybe_iter)
-        return not isinstance(maybe_iter, unless)
     except TypeError:
         return False
+    return not isinstance(maybe_iter, unless)
 
 
 def iterate(maybe_iter, unless=(basestring, dict)):
