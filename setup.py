@@ -7,7 +7,7 @@ try:
 except ImportError, _:
     pass # No 'develop' command, oh well.
 
-version = '1.3'
+version = '1.3.1'
 
 setup(name='unstdlib',
     version=version,
@@ -15,7 +15,7 @@ setup(name='unstdlib',
     author='Andrey Petrov',
     author_email='andrey.petrov@shazow.net',
     url='https://github.com/shazow/unstdlib.py',
-    packages=['unstdlib'],
+    packages=['unstdlib', 'unstdlib.standard'],
     long_description="""
     Have you ever written code that you used in more than one project? Me too.
 
