@@ -44,7 +44,11 @@ def is_iterable(maybe_iter, unless=(basestring, dict)):
     >>> is_iterable(xrange(5))
     True
     """
-    return hasattr(maybe_iter, '__iter__') and not isinstance(maybe_iter, unless)
+    try:
+        iter(maybe_iter)
+    except TypeError:
+        return False
+    return not isinstance(maybe_iter, unless)
 
 
 def iterate(maybe_iter, unless=(basestring, dict)):
