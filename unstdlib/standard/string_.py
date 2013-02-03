@@ -2,13 +2,13 @@ import re
 import string
 import unicodedata
 
-from .random_ import random
+from random_ import random
 
 
 __all__ = [
     'random_string',
-    'number_to_string', 'string_to_number',
-    'to_str', 'to_unicode',
+    'number_to_string', 'string_to_number', 'dollars_to_cents',
+    'to_str', 'to_unicode', 'to_int',
     'slugify',
 ]
 
@@ -118,7 +118,7 @@ def to_unicode(obj, encoding='utf-8', fallback='latin1', **decode_args):
     Returns a ``unicode`` of ``obj``, decoding using ``encoding`` if necessary.
     If decoding fails, the ``fallback`` encoding (default ``latin1``) is used.
 
-    For example::
+    Examples::
 
         >>> to_unicode('\xe1\x88\xb4')
         u'\u1234'
@@ -142,6 +142,60 @@ def to_unicode(obj, encoding='utf-8', fallback='latin1', **decode_args):
         return unicode(obj_str, encoding, **decode_args)
     except UnicodeDecodeError:
         return unicode(obj_str, fallback, **decode_args)
+
+
+def to_int(s, default=0):
+    """
+    Return input converted into an integer. If failed, then return ``default``.
+
+    Examples::
+
+        >>> to_int('1')
+        1
+        >>> to_int(1)
+        1
+        >>> to_int('')
+        0
+        >>> to_int(None)
+        0
+        >>> to_int(0, default='Empty')
+        0
+        >>> to_int(None, default='Empty')
+        'Emptya'
+    """
+    try:
+        return int(s)
+    except (TypeError, ValueError):
+        return default
+
+
+def dollars_to_cents(s, allow_negative=False):
+    """
+    Given a string or integer representing dollars, return an integer of
+    equivalent cents, in an input-resilient way.
+
+    Examples::
+
+        >>> dollars_to_cents('$1')
+        100
+        >>> dollars_to_cents('1')
+        100
+        >>> dollars_to_cents(1)
+        100
+    """
+    # TODO: Add support for "-$100"
+    # TODO: Implement cents_to_dollars
+    if not s:
+        return
+
+    if isinstance(s, basestring):
+        s = s.lstrip('$')
+
+    dollars = int(round(float(s) * 100))
+    if not allow_negative and dollars < 0:
+        raise ValueError('Negative values not permitted.')
+
+    return dollars
 
 
 RE_SLUG = re.compile(r'\W+')
