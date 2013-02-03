@@ -7,7 +7,7 @@ try:
 except ImportError, _:
     pass # No 'develop' command, oh well.
 
-version = '1.3.1'
+version = '1.4.0'
 
 setup(name='unstdlib',
     version=version,
