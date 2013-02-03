@@ -2,7 +2,7 @@ import re
 import string
 import unicodedata
 
-from random_ import random
+from .random_ import random
 
 
 __all__ = [
@@ -161,7 +161,7 @@ def to_int(s, default=0):
         >>> to_int(0, default='Empty')
         0
         >>> to_int(None, default='Empty')
-        'Emptya'
+        'Empty'
     """
     try:
         return int(s)
