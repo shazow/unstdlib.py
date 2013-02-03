@@ -1,7 +1,8 @@
-import random
 import re
 import string
 import unicodedata
+
+from .random_ import random
 
 
 __all__ = [
