@@ -2,6 +2,8 @@ import os.path
 import hashlib
 import time
 
+from functools_ import memoized_into
+
 
 _IMPORT_TIME = str(int(time.time()))
 
@@ -12,8 +14,10 @@ _BUST_METHODS = {
     'importtime': lambda src_path: _IMPORT_TIME,
 }
 
+_BUST_CACHE = {}
 
-# TODO: Cache this.
+
+@memoized_into(_BUST_CACHE)
 def get_cache_buster(src_path, method='importtime'):
     """
     Return a string that can be used as a parameter for cache-busting URLs for
@@ -32,9 +36,12 @@ def get_cache_buster(src_path, method='importtime'):
 
     Example::
 
-        >>> get_cache_buster('html.py')
-        >>> get_cache_buster('html.py', method='mtime')
-        >>> get_cache_buster('html.py', method='md5')
+        >>> get_cache_buster('html.py') is _IMPORT_TIME
+        True
+        >>> get_cache_buster('html.py', method='mtime') is not None  # Is there a better doctest example?
+        True
+        >>> get_cache_buster('html.py', method='md5') is not None  # Is there a better doctest example?
+        True
     """
     try:
         fn = _BUST_METHODS[method]
@@ -43,3 +50,7 @@ def get_cache_buster(src_path, method='importtime'):
 
     return fn(src_path)
 
+
+if __name__ == "__main__":
+    import doctest
+    doctest.testmod(optionflags=doctest.ELLIPSIS)
