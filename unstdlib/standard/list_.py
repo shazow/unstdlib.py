@@ -11,10 +11,13 @@ __all__ = [
 
 
 def groupby_count(i, key=None, force_keys=None):
-    """
+    """ Aggregate iterator values into buckets based on how frequently the
+    values appear.
+
     Example::
 
-        [1,1,1,2,3] -> [(1,3),(2,1),(3,1)]
+    >>> [1, 1, 1, 2, 3]
+    [(1,3), (2,1), (3,1)]
     """
     counter = defaultdict(lambda: 0)
     if not key:
@@ -31,8 +34,7 @@ def groupby_count(i, key=None, force_keys=None):
 
 
 def is_iterable(maybe_iter, unless=(basestring, dict)):
-    """
-    Return whether ``maybe_iter`` is an iterable, unless it's an instance of one
+    """ Return whether ``maybe_iter`` is an iterable, unless it's an instance of one
     of the base class, or tuple of base classes, given in ``unless``.
 
     >>> is_iterable('foo')
@@ -52,8 +54,7 @@ def is_iterable(maybe_iter, unless=(basestring, dict)):
 
 
 def iterate(maybe_iter, unless=(basestring, dict)):
-    """
-    Always return an iterable.
+    """ Always return an iterable.
 
     Returns ``maybe_iter`` if it is an iterable, otherwise it returns a single
     element iterable containing ``maybe_iter``. By default, strings and dicts
@@ -81,6 +82,24 @@ def iterate(maybe_iter, unless=(basestring, dict)):
     if is_iterable(maybe_iter, unless=unless):
         return maybe_iter
     return [maybe_iter]
+
+
+def iterate_dict(dictish):
+    """ Return a consistent (key, value) iterator on dict-like objects,
+    including lists of tuple pairs.
+
+    Example:
+
+    >>> iterate_dict({'a': 1})
+    [('a', 1)]
+    >>> iterate_dict([('a', 1, 'b', 2)])
+    [('a', 1), ('b', 2)]
+    """
+    if hasattr(dictish, 'iteritems'):
+        return dictish.iteritems()
+    if hasattr(dictish, 'items'):
+        return dictish.items()
+    return dictish
 
 
 def iterate_chunks(i, size=10):

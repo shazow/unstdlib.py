@@ -35,7 +35,8 @@ def memoized_into(cache=None):
 
 
 def memoized(fn):
-    """ A shortcut for :method:`memoized_into` which can be applied without a call.
+    """ A shortcut for :method:`memoized_into` which can be applied without the
+    vulgar parenthesis.
 
     Example::
 
