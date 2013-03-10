@@ -31,35 +31,48 @@ Use it in your code:
 
 ### [unstdlib.standard](https://github.com/shazow/unstdlib.py/blob/master/unstdlib/standard/)
 
-* ``random_string(length=6, alphabet=string.letters+string.digits)``
-* ``get_many(d, required=[], optional=[], one_of=[])``
-* ``pop_many(d, keys, default=None)``
-* ``groupby_count(i, key=None, force_keys=None)``
-* ``groupby_dict(i, keyfunc=None)``
-* ``is_subclass(o, bases)``
-* ``is_iterable(maybe_iter, unless=(basestring, dict))``
-* ``iterate(maybe_iter, unless=(basestring, dict))``
-* ``iterate_chunks(i, size=10)``
-* ``iterate_flatten(q)``
-* ``iterate_date(start, stop=None, step=datetime.timedelta(days=1))``
-* ``iterate_date_values(d, start_date=None, stop_date=None, default=0)``
-* ``convert_exception(from_exception, to_exception, *to_args, **to_kw)``
-* ``number_to_string(n, alphabet)``
-* ``string_to_number(s, alphabet)``
-* ``isoformat_as_datetime(s)``
-* ``truncate_datetime(t, resolution)``
-* ``now(timezone=None)``
-* ``slugify(s, delimiter='-')``
-* ``@listify(fn=None, wrapper=list)``
+* ``datetime_.iterate_date(start, stop=None, step=datetime.timedelta(days=1))``
+* ``datetime_.iterate_date_values(d, start_date=None, stop_date=None, default=0)``
+* ``datetime_.isoformat_as_datetime(s)``
+* ``datetime_.truncate_datetime(t, resolution)``
+* ``datetime_.now(timezone=None)``
+* ``dict_.get_many(d, required=[], optional=[], one_of=[])``
+* ``dict_.pop_many(d, keys, default=None)``
+* ``@exception_.convert_exception(from_exception, to_exception, *to_args, **to_kw)``
+* ``functools_.assert_hashable(*args, **kw)``
+* ``@functools_.memoized(fn=None, cache=None)``
+* ``@functools_.memoized_property(object)``
+* ``list_.groupby_count(i, key=None, force_keys=None)``
+* ``list_.iterate(maybe_iter, unless=(basestring, dict))``
+* ``list_.is_iterable(maybe_iter, unless=(basestring, dict))``
+* ``list_.iterate_chunks(i, size=10)``
+* ``list_.iterate_flatten(q)``
+* ``@list_.listify(fn=None, wrapper=list)``
+* ``string_.random_string(length=6, alphabet=string.letters+string.digits)``
+* ``string_.number_to_string(n, alphabet)``
+* ``string_.string_to_number(s, alphabet)``
+* ``string_.dollars_to_cents(s, allow_negative=False)``
+* ``string_.to_str(obj, encoding='utf-8', **encode_args)``
+* ``string_.to_unicode(obj, encoding='utf-8', fallback='latin1', **decode_args)``
+* ``string_.to_int(s, default=0)``
+* ``string_.slugify(s, delimiter='-')``
+* ``type_.is_subclass(o, bases)``
 
-### [unstdlib.formencode](https://github.com/shazow/unstdlib.py/blob/master/unstdlib/formencode/)
+### [unstdlib.formencode](https://github.com/shazow/unstdlib.py/blob/master/unstdlib/formencode.py
 
 * ``validate(d, key, validator)``
 * ``validate_many(d, schema)``
 
-### [unstdlib.sqlalchemy](https://github.com/shazow/unstdlib.py/blob/master/unstdlib/sqlalchemy/)
+### [unstdlib.sqlalchemy](https://github.com/shazow/unstdlib.py/blob/master/unstdlib/sqlalchemy.py
 
 * ``enumerate_query_by_limit(q, limit=1000)``
+
+### [unstdlib.html](https://github.com/shazow/unstdlib.py/blob/master/unstdlib/html.py
+
+* ``get_cache_buster(src_path, method='importtime')``
+* ``html_tag(tagname, content='', attrs=None)``
+* ``html_javascript_link(src_url, src_path=None, cache_bust=None, content='', extra_attrs=None)``
+* ``html_stylesheet_link(src_url, src_path=None, cache_bust=None, content='', extra_attrs=None)``
 
 
 ## Organization & Philosophy

@@ -1,6 +1,9 @@
 import sys
 
 
+__all__ = ['convert_exception']
+
+
 def convert_exception(from_exception, to_exception, *to_args, **to_kw):
     """
     Decorator: Catch exception ``from_exception`` and instead raise ``to_exception(*to_args, **to_kw)``.
