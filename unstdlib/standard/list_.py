@@ -16,8 +16,8 @@ def groupby_count(i, key=None, force_keys=None):
 
     Example::
 
-    >>> groupby_count([1, 1, 1, 2, 3])
-    [(1, 3), (2, 1), (3, 1)]
+        >>> groupby_count([1, 1, 1, 2, 3])
+        [(1, 3), (2, 1), (3, 1)]
     """
     counter = defaultdict(lambda: 0)
     if not key:
@@ -37,14 +37,16 @@ def is_iterable(maybe_iter, unless=(basestring, dict)):
     """ Return whether ``maybe_iter`` is an iterable, unless it's an instance of one
     of the base class, or tuple of base classes, given in ``unless``.
 
-    >>> is_iterable('foo')
-    False
-    >>> is_iterable(['foo'])
-    True
-    >>> is_iterable(['foo'], unless=list)
-    False
-    >>> is_iterable(xrange(5))
-    True
+    Example::
+
+        >>> is_iterable('foo')
+        False
+        >>> is_iterable(['foo'])
+        True
+        >>> is_iterable(['foo'], unless=list)
+        False
+        >>> is_iterable(xrange(5))
+        True
     """
     try:
         iter(maybe_iter)
@@ -70,14 +72,14 @@ def iterate(maybe_iter, unless=(basestring, dict)):
 
     Example::
 
-    >>> iterate('foo')
-    ['foo']
-    >>> iterate(['foo'])
-    ['foo']
-    >>> iterate(['foo'], unless=list)
-    [['foo']]
-    >>> list(iterate(xrange(5)))
-    [0, 1, 2, 3, 4]
+        >>> iterate('foo')
+        ['foo']
+        >>> iterate(['foo'])
+        ['foo']
+        >>> iterate(['foo'], unless=list)
+        [['foo']]
+        >>> list(iterate(xrange(5)))
+        [0, 1, 2, 3, 4]
     """
     if is_iterable(maybe_iter, unless=unless):
         return maybe_iter
@@ -90,10 +92,10 @@ def iterate_items(dictish):
 
     Example:
 
-    >>> list(iterate_dict({'a': 1}))
-    [('a', 1)]
-    >>> list(iterate_dict([('a', 1), ('b', 2)]))
-    [('a', 1), ('b', 2)]
+        >>> list(iterate_items({'a': 1}))
+        [('a', 1)]
+        >>> list(iterate_items([('a', 1), ('b', 2)]))
+        [('a', 1), ('b', 2)]
     """
     if hasattr(dictish, 'iteritems'):
         return dictish.iteritems()
@@ -109,7 +111,8 @@ def iterate_chunks(i, size=10):
 
     Example::
 
-        list(iterate_chunks([1,2,3,4], size=2)) -> [[1,2],[3,4]]
+        >>> list(iterate_chunks([1, 2, 3, 4], size=2))
+        [[1, 2], [3, 4]]
     """
     accumulator = []
 
