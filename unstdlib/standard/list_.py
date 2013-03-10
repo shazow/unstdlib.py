@@ -16,8 +16,8 @@ def groupby_count(i, key=None, force_keys=None):
 
     Example::
 
-    >>> [1, 1, 1, 2, 3]
-    [(1,3), (2,1), (3,1)]
+    >>> groupby_count([1, 1, 1, 2, 3])
+    [(1, 3), (2, 1), (3, 1)]
     """
     counter = defaultdict(lambda: 0)
     if not key:
@@ -90,9 +90,9 @@ def iterate_dict(dictish):
 
     Example:
 
-    >>> iterate_dict({'a': 1})
+    >>> list(iterate_dict({'a': 1}))
     [('a', 1)]
-    >>> iterate_dict([('a', 1, 'b', 2)])
+    >>> list(iterate_dict([('a', 1), ('b', 2)]))
     [('a', 1), ('b', 2)]
     """
     if hasattr(dictish, 'iteritems'):
