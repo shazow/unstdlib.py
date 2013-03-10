@@ -11,10 +11,13 @@ __all__ = [
 
 
 def groupby_count(i, key=None, force_keys=None):
-    """
+    """ Aggregate iterator values into buckets based on how frequently the
+    values appear.
+
     Example::
 
-        [1,1,1,2,3] -> [(1,3),(2,1),(3,1)]
+        >>> groupby_count([1, 1, 1, 2, 3])
+        [(1, 3), (2, 1), (3, 1)]
     """
     counter = defaultdict(lambda: 0)
     if not key:
@@ -31,18 +34,19 @@ def groupby_count(i, key=None, force_keys=None):
 
 
 def is_iterable(maybe_iter, unless=(basestring, dict)):
-    """
-    Return whether ``maybe_iter`` is an iterable, unless it's an instance of one
+    """ Return whether ``maybe_iter`` is an iterable, unless it's an instance of one
     of the base class, or tuple of base classes, given in ``unless``.
 
-    >>> is_iterable('foo')
-    False
-    >>> is_iterable(['foo'])
-    True
-    >>> is_iterable(['foo'], unless=list)
-    False
-    >>> is_iterable(xrange(5))
-    True
+    Example::
+
+        >>> is_iterable('foo')
+        False
+        >>> is_iterable(['foo'])
+        True
+        >>> is_iterable(['foo'], unless=list)
+        False
+        >>> is_iterable(xrange(5))
+        True
     """
     try:
         iter(maybe_iter)
@@ -52,8 +56,7 @@ def is_iterable(maybe_iter, unless=(basestring, dict)):
 
 
 def iterate(maybe_iter, unless=(basestring, dict)):
-    """
-    Always return an iterable.
+    """ Always return an iterable.
 
     Returns ``maybe_iter`` if it is an iterable, otherwise it returns a single
     element iterable containing ``maybe_iter``. By default, strings and dicts
@@ -69,18 +72,36 @@ def iterate(maybe_iter, unless=(basestring, dict)):
 
     Example::
 
-    >>> iterate('foo')
-    ['foo']
-    >>> iterate(['foo'])
-    ['foo']
-    >>> iterate(['foo'], unless=list)
-    [['foo']]
-    >>> list(iterate(xrange(5)))
-    [0, 1, 2, 3, 4]
+        >>> iterate('foo')
+        ['foo']
+        >>> iterate(['foo'])
+        ['foo']
+        >>> iterate(['foo'], unless=list)
+        [['foo']]
+        >>> list(iterate(xrange(5)))
+        [0, 1, 2, 3, 4]
     """
     if is_iterable(maybe_iter, unless=unless):
         return maybe_iter
     return [maybe_iter]
+
+
+def iterate_items(dictish):
+    """ Return a consistent (key, value) iterable on dict-like objects,
+    including lists of tuple pairs.
+
+    Example:
+
+        >>> list(iterate_items({'a': 1}))
+        [('a', 1)]
+        >>> list(iterate_items([('a', 1), ('b', 2)]))
+        [('a', 1), ('b', 2)]
+    """
+    if hasattr(dictish, 'iteritems'):
+        return dictish.iteritems()
+    if hasattr(dictish, 'items'):
+        return dictish.items()
+    return dictish
 
 
 def iterate_chunks(i, size=10):
@@ -90,7 +111,8 @@ def iterate_chunks(i, size=10):
 
     Example::
 
-        list(iterate_chunks([1,2,3,4], size=2)) -> [[1,2],[3,4]]
+        >>> list(iterate_chunks([1, 2, 3, 4], size=2))
+        [[1, 2], [3, 4]]
     """
     accumulator = []
 
@@ -146,8 +168,8 @@ def listify(fn=None, wrapper=list):
     """
     def listify_return(fn):
         @wraps(fn)
-        def listify_helper(*args, **kwargs):
-            return wrapper(fn(*args, **kwargs))
+        def listify_helper(*args, **kw):
+            return wrapper(fn(*args, **kw))
         return listify_helper
     if fn is None:
         return listify_return
