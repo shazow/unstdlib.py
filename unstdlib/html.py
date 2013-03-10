@@ -51,20 +51,20 @@ def get_cache_buster(src_path, method='importtime'):
 def _generate_dom_attrs(attrs, allow_no_value=True):
     """ Yield compiled DOM attribute key-value strings.
 
-    If the value is `False`, then it is treated as no-value."""
+    If the value is `True`, then it is treated as no-value."""
     for attr in iterate_items(attrs):
         if isinstance(attr, basestring):
-            attr = (attr, False)
+            attr = (attr, True)
         key, value = attr
-        if value is False and not allow_no_value:
-            value = key  # E.g. <option checked="checked" />
-        if value is False:
-            yield value  # E.g. <option checked />
+        if value is True and not allow_no_value:
+            value = key  # E.g. <option checked="true" />
+        if value is True:
+            yield True  # E.g. <option checked />
         else:
             yield '%s="%s"' % (key, value.replace('"', '\\"'))
 
 
-def html_tag(tagname, body='', attrs=None):
+def html_tag(tagname, content='', attrs=None):
     """ Helper for programmatically building HTML tags.
 
     Note that this barely does any escaping, and will happily spit out
@@ -73,34 +73,34 @@ def html_tag(tagname, body='', attrs=None):
     :param tagname:
         Tag name of the DOM element we want to return.
 
-    :param body:
-        Optional body of the DOM element. If `False`, then the element is
-        self-closed.
+    :param content:
+        Optional content of the DOM element. If `None`, then the element is
+        self-closed. By default, the content is an empty string.
 
     :param attrs:
         Optional dictionary-like collection of attributes for the DOM element.
 
     Example::
 
-        >>> html_tag('div', body='Hello, world.')
+        >>> html_tag('div', content='Hello, world.')
         '<div>Hello, world.</div>'
         >>> html_tag('script', attrs={'src': '/static/js/core.js'})
         '<script src="/static/js/core.js"></script>'
         >>> html_tag('script', attrs=[('src', '/static/js/core.js'), ('type', 'text/javascript')])
         '<script src="/static/js/core.js" type="text/javascript"></script>'
-        >>> html_tag('meta', body=False, attrs=dict(content='"quotedquotes"'))
+        >>> html_tag('meta', content=None, attrs=dict(content='"quotedquotes"'))
         '<meta content="\\\\"quotedquotes\\\\"" />'
     """
     attrs_str = attrs and ' '.join(_generate_dom_attrs(attrs))
     open_tag = tagname
     if attrs_str:
         open_tag += ' ' + attrs_str
-    if body is False:
-        return '<%s />' % open_tag
-    return '<%s>%s</%s>' % (open_tag, body, tagname)
+    if content or isinstance(content, basestring):
+        return '<%s>%s</%s>' % (open_tag, content, tagname)
+    return '<%s />' % open_tag
 
 
-def html_javascript_link(src_url, src_path=None, cache_bust=None, body='', extra_attrs=None):
+def html_javascript_link(src_url, src_path=None, cache_bust=None, content='', extra_attrs=None):
     """ Helper for programmatically building HTML JavaScript source include
     links, with optional cache busting.
 
@@ -111,8 +111,8 @@ def html_javascript_link(src_url, src_path=None, cache_bust=None, body='', extra
         Optional filesystem path to the source file, used when `cache_bust` is
         enabled.
 
-    :param body:
-        Optional body of the DOM element. If `False`, then the element is
+    :param content:
+        Optional content of the DOM element. If `None`, then the element is
         self-closed.
 
     :param cache_bust:
@@ -138,10 +138,10 @@ def html_javascript_link(src_url, src_path=None, cache_bust=None, body='', extra
     if extra_attrs:
         attrs.update(extra_attrs)
 
-    return html_tag('script', body=body, attrs=attrs)
+    return html_tag('script', content=content, attrs=attrs)
 
 
-def html_stylesheet_link(src_url, src_path=None, cache_bust=None, body='', extra_attrs=None):
+def html_stylesheet_link(src_url, src_path=None, cache_bust=None, content='', extra_attrs=None):
     """ Helper for programmatically building HTML StyleSheet source include
     links, with optional cache busting.
 
@@ -152,8 +152,8 @@ def html_stylesheet_link(src_url, src_path=None, cache_bust=None, body='', extra
         Optional filesystem path to the source file, used when `cache_bust` is
         enabled.
 
-    :param body:
-        Optional body of the DOM element. If `False`, then the element is
+    :param content:
+        Optional content of the DOM element. If `None`, then the element is
         self-closed.
 
     :param cache_bust:
@@ -179,7 +179,7 @@ def html_stylesheet_link(src_url, src_path=None, cache_bust=None, body='', extra
     if extra_attrs:
         attrs.update(extra_attrs)
 
-    return html_tag('link', body=body, attrs=attrs)
+    return html_tag('link', content=content, attrs=attrs)
 
 
 if __name__ == "__main__":
