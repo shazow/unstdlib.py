@@ -168,8 +168,8 @@ def listify(fn=None, wrapper=list):
     """
     def listify_return(fn):
         @wraps(fn)
-        def listify_helper(*args, **kwargs):
-            return wrapper(fn(*args, **kwargs))
+        def listify_helper(*args, **kw):
+            return wrapper(fn(*args, **kw))
         return listify_helper
     if fn is None:
         return listify_return

@@ -2,7 +2,7 @@ from functools import wraps
 
 
 __all__ = [
-    'memoized', 'memoized_property',
+    'memoized', 'memoized_property', 'assert_hashable',
 ]
 
 
@@ -15,15 +15,11 @@ def memoized(fn=None, cache=None):
     Example::
 
         >>> @memoized
-        ... def foo(bar=None):
+        ... def foo(bar):
         ...   print "Not cached."
-        >>> foo()
-        Not cached.
-        >>> foo()
         >>> foo(1)
         Not cached.
         >>> foo(1)
-        >>> foo()
         >>> foo(2)
         Not cached.
 
@@ -31,7 +27,7 @@ def memoized(fn=None, cache=None):
 
         >>> cache_container = {}
         >>> @memoized(cache=cache_container)
-        ... def baz(quux=None):
+        ... def baz(quux):
         ...   print "Not cached."
         >>> baz(quux=42)
         Not cached.
@@ -49,20 +45,48 @@ def memoized(fn=None, cache=None):
 
     def decorator(fn):
         @wraps(fn)
-        def wrapped(*args, **kwargs):
-            key = (args, tuple(sorted(kwargs.items())))
-            if key not in cache:
-                cache[key] = fn(*args, **kwargs)
+        def wrapped(*args, **kw):
+            key = (args, tuple(sorted(kw.items())))
+
+            try:
+                is_cached = key in cache
+            except TypeError, e:
+                # Re-raise a more descriptive error if it's a hashing problem.
+                assert_hashable(*args, **kw)
+                # If it hasn't raised by now, then something else is going on,
+                # raise it. (This shouldn't happen.)
+                raise e
+
+            if not is_cached:
+                cache[key] = fn(*args, **kw)
             return cache[key]
+
         wrapped.memoize_cache = cache
         return wrapped
+
     return decorator
+
+
+def assert_hashable(*args, **kw):
+    """ Verify that each argument is hashable.
+
+    Passes silently if successful. Raises descriptive TypeError otherwise.
+    """
+    try:
+        [hash(arg) for i, arg in enumerate(args)]
+    except TypeError:
+        raise TypeError('Argument in position %d is not hashable: %r' % (i, arg))
+    try:
+        [hash(val) for key, val in kw.items()]
+    except TypeError:
+        raise TypeError('Keyword argument %r is not hashable: %r' % (key, val))
+
 
 
 # `memoized_property` is lovingly borrowed from @zzzeek, with permission:
 #   https://twitter.com/zzzeek/status/310503354268790784
 class memoized_property(object):
-    """A read-only @property that is only evaluated once."""
+    """ A read-only @property that is only evaluated once. """
     def __init__(self, fget, doc=None):
         self.fget = fget
         self.__doc__ = doc or fget.__doc__
