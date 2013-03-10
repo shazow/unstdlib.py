@@ -96,7 +96,7 @@ Philosophy* section and send over a pull request.
 
 (The MIT License)
 
-    Copyright 2011-2012 Andrey Petrov <andrey.petrov@shazow.net>
+    Copyright 2011-2013 Andrey Petrov <andrey.petrov@shazow.net>
 
     Permission is hereby granted, free of charge, to any person obtaining a copy of
     this software and associated documentation files (the 'Software'), to deal in
