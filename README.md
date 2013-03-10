@@ -58,16 +58,16 @@ Use it in your code:
 * ``string_.slugify(s, delimiter='-')``
 * ``type_.is_subclass(o, bases)``
 
-### [unstdlib.formencode](https://github.com/shazow/unstdlib.py/blob/master/unstdlib/formencode.py
+### [unstdlib.formencode](https://github.com/shazow/unstdlib.py/blob/master/unstdlib/formencode.py)
 
 * ``validate(d, key, validator)``
 * ``validate_many(d, schema)``
 
-### [unstdlib.sqlalchemy](https://github.com/shazow/unstdlib.py/blob/master/unstdlib/sqlalchemy.py
+### [unstdlib.sqlalchemy](https://github.com/shazow/unstdlib.py/blob/master/unstdlib/sqlalchemy.py)
 
 * ``enumerate_query_by_limit(q, limit=1000)``
 
-### [unstdlib.html](https://github.com/shazow/unstdlib.py/blob/master/unstdlib/html.py
+### [unstdlib.html](https://github.com/shazow/unstdlib.py/blob/master/unstdlib/html.py)
 
 * ``get_cache_buster(src_path, method='importtime')``
 * ``html_tag(tagname, content='', attrs=None)``
