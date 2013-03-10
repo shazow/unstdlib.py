@@ -1,9 +1,40 @@
 from functools import wraps
 
+from list_ import iterate_items
+
 
 __all__ = [
     'memoized', 'memoized_property', 'assert_hashable',
 ]
+
+
+def assert_hashable(*args, **kw):
+    """ Verify that each argument is hashable.
+
+    Passes silently if successful. Raises descriptive TypeError otherwise.
+
+    Example::
+
+        >>> assert_hashable(1, 'foo', bar='baz')
+        >>> assert_hashable(1, [], baz='baz')
+        Traceback (most recent call last):
+          ...
+        TypeError: Argument in position 1 is not hashable: []
+        >>> assert_hashable(1, 'foo', bar=[])
+        Traceback (most recent call last):
+          ...
+        TypeError: Keyword argument 'bar' is not hashable: []
+    """
+    try:
+        for i, arg in enumerate(args):
+            hash(arg)
+    except TypeError:
+        raise TypeError('Argument in position %d is not hashable: %r' % (i, arg))
+    try:
+        for key, val in iterate_items(kw):
+            hash(val)
+    except TypeError:
+        raise TypeError('Keyword argument %r is not hashable: %r' % (key, val))
 
 
 def memoized(fn=None, cache=None):
@@ -65,22 +96,6 @@ def memoized(fn=None, cache=None):
         return wrapped
 
     return decorator
-
-
-def assert_hashable(*args, **kw):
-    """ Verify that each argument is hashable.
-
-    Passes silently if successful. Raises descriptive TypeError otherwise.
-    """
-    try:
-        [hash(arg) for i, arg in enumerate(args)]
-    except TypeError:
-        raise TypeError('Argument in position %d is not hashable: %r' % (i, arg))
-    try:
-        [hash(val) for key, val in kw.items()]
-    except TypeError:
-        raise TypeError('Keyword argument %r is not hashable: %r' % (key, val))
-
 
 
 # `memoized_property` is lovingly borrowed from @zzzeek, with permission:
