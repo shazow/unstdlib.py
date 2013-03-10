@@ -34,14 +34,9 @@ _BUST_METHODS = {
 }
 
 
-
-@memoized
 def get_cache_buster(src_path, method='importtime'):
     """ Return a string that can be used as a parameter for cache-busting URLs
     for this asset.
-
-    NOTE: The returned value is cached, to avoid doing processing if it's
-    called repeatedly with the same parameters.
 
     :param src_path:
         Filesystem path to the file we're generating a cache-busting value for.
@@ -50,6 +45,8 @@ def get_cache_buster(src_path, method='importtime'):
         Method for cache-busting. Supported values: importtime, mtime, md5
         The default is 'importtime', because it requires the least processing.
 
+    Note that the mtime and md5 cache busting methods' results are cached on
+    the src_path.
 
     Example::
 
