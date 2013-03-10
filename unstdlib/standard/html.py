@@ -2,8 +2,8 @@ import os.path
 import hashlib
 import time
 
-from functools_ import memoized_into
-from list_ import iterate_dict
+from functools_ import memoized
+from list_ import iterate_items
 
 
 _IMPORT_TIME = str(int(time.time()))
@@ -14,10 +14,8 @@ _BUST_METHODS = {
     'importtime': lambda src_path: _IMPORT_TIME,
 }
 
-_BUST_CACHE = {}
 
-
-@memoized_into(_BUST_CACHE)
+@memoized
 def get_cache_buster(src_path, method='importtime'):
     """ Return a string that can be used as a parameter for cache-busting URLs
     for this asset.
@@ -54,7 +52,7 @@ def _generate_dom_attrs(attrs, allow_no_value=True):
     """ Yield compiled DOM attribute key-value strings.
 
     If the value is `False`, then it is treated as no-value."""
-    for attr in iterate_dict(attrs):
+    for attr in iterate_items(attrs):
         if isinstance(attr, basestring):
             attr = (attr, False)
         key, value = attr

@@ -84,8 +84,8 @@ def iterate(maybe_iter, unless=(basestring, dict)):
     return [maybe_iter]
 
 
-def iterate_dict(dictish):
-    """ Return a consistent (key, value) iterator on dict-like objects,
+def iterate_items(dictish):
+    """ Return a consistent (key, value) iterable on dict-like objects,
     including lists of tuple pairs.
 
     Example:
