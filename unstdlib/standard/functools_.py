@@ -1,42 +1,16 @@
-def _create_memoize_decorator(cache):
-    def decorator(fn):
-        def wrapped(*args, **kwargs):
-            key = (args, tuple(sorted(kwargs.items())))
-            if key not in cache:
-                cache[key] = fn(*args, **kwargs)
-            return cache[key]
-        return wrapped
-    return decorator
+from functools import wraps
 
 
-def memoized_into(cache=None):
+__all__ = [
+    'memoized', 'memoized_property',
+]
+
+
+def memoized(fn=None, cache=None):
     """ Memoize a function into an optionally-specificed cache container.
 
-    Example::
-
-        >>> cache_container = {}
-        >>> @memoized_into(cache_container)
-        ... def foo(bar=None):
-        ...   print "Not cached."
-        >>> foo()
-        Not cached.
-        >>> foo()
-        >>> foo(1)
-        Not cached.
-        >>> foo(1)
-        >>> foo()
-        >>> foo(2)
-        Not cached.
-    """
-    if cache is None:
-        cache = {}
-
-    return _create_memoize_decorator(cache)
-
-
-def memoized(fn):
-    """ A shortcut for :method:`memoized_into` which can be applied without the
-    vulgar parenthesis.
+    If the `cache` container is not specified, then the instance container is
+    accessible from the wrapped function's `memoize_cache` property.
 
     Example::
 
@@ -48,8 +22,41 @@ def memoized(fn):
         >>> foo()
         >>> foo(1)
         Not cached.
+        >>> foo(1)
+        >>> foo()
+        >>> foo(2)
+        Not cached.
+
+    Example with a specific cache container::
+
+        >>> cache_container = {}
+        >>> @memoized(cache=cache_container)
+        ... def baz(quux=None):
+        ...   print "Not cached."
+        >>> baz(quux=42)
+        Not cached.
+        >>> baz(quux=42)
+        >>> cache_container.clear()
+        >>> baz(quux=42)
+        Not cached.
     """
-    return memoized_into()(fn)
+    if fn:
+        # This is a hack to support both @memoize and @memoize(...)
+        return memoized(cache=cache)(fn)
+
+    if cache is None:
+        cache = {}
+
+    def decorator(fn):
+        @wraps(fn)
+        def wrapped(*args, **kwargs):
+            key = (args, tuple(sorted(kwargs.items())))
+            if key not in cache:
+                cache[key] = fn(*args, **kwargs)
+            return cache[key]
+        wrapped.memoize_cache = cache
+        return wrapped
+    return decorator
 
 
 # `memoized_property` is lovingly borrowed from @zzzeek, with permission:
