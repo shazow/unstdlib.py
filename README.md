@@ -46,6 +46,7 @@ Use it in your code:
 * ``list_.iterate(maybe_iter, unless=(basestring, dict))``
 * ``list_.is_iterable(maybe_iter, unless=(basestring, dict))``
 * ``list_.iterate_chunks(i, size=10)``
+* ``list_.iterate_items(dictish)``
 * ``list_.iterate_flatten(q)``
 * ``@list_.listify(fn=None, wrapper=list)``
 * ``string_.random_string(length=6, alphabet=string.letters+string.digits)``

@@ -5,7 +5,7 @@ from collections import defaultdict
 
 __all__ = [
     'groupby_count',
-    'iterate', 'is_iterable', 'iterate_chunks', 'iterate_flatten',
+    'iterate', 'is_iterable', 'iterate_chunks', 'iterate_items', 'iterate_flatten',
     'listify',
 ]
 
