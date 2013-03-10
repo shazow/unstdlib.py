@@ -2,17 +2,37 @@ import os.path
 import hashlib
 import time
 
-from functools_ import memoized
-from list_ import iterate_items
+from unstdlib.standard.functools_ import memoized
+from unstdlib.standard.list_ import iterate_items
+
+
+__all__ = [
+    'get_cache_buster', 'html_tag', 'html_javascript_link', 'html_stylesheet_link',
+]
+
+
+@memoized
+def _cache_key_by_md5(src_path, chunk_size=65536):
+    hash = hashlib.md5()
+    with open(src_path, 'rb') as f:
+        for chunk in iter(lambda: f.read(65536), ''):
+            hash.update(chunk)
+    return hash.hexdigest()
+
+
+@memoized
+def _cache_key_by_mtime(src_path):
+    return str(int(os.path.getmtime(src_path)))
 
 
 _IMPORT_TIME = str(int(time.time()))
 
 _BUST_METHODS = {
-    'mtime': lambda src_path: str(int(os.path.getmtime(src_path))),
-    'md5': lambda src_path: hashlib.md5(open(src_path).read()).hexdigest(),
+    'mtime': _cache_key_by_mtime,
+    'md5': _cache_key_by_md5,
     'importtime': lambda src_path: _IMPORT_TIME,
 }
+
 
 
 @memoized
@@ -35,9 +55,9 @@ def get_cache_buster(src_path, method='importtime'):
 
         >>> get_cache_buster('html.py') is _IMPORT_TIME
         True
-        >>> get_cache_buster('html.py', method='mtime') is not _IMPORT_TIME  # FIXME: Is there a better doctest example?
+        >>> get_cache_buster('html.py', method='mtime') == _cache_key_by_mtime('html.py')
         True
-        >>> get_cache_buster('html.py', method='md5') is not _IMPORT_TIME  # FIXME: Is there a better doctest example?
+        >>> get_cache_buster('html.py', method='md5') == _cache_key_by_md5('html.py')
         True
     """
     try:
