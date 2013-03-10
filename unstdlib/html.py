@@ -50,11 +50,12 @@ def get_cache_buster(src_path, method='importtime'):
 
     Example::
 
-        >>> get_cache_buster('html.py') is _IMPORT_TIME
+        >>> SRC_PATH = os.path.join(os.path.dirname(__file__), 'html.py')
+        >>> get_cache_buster(SRC_PATH) is _IMPORT_TIME
         True
-        >>> get_cache_buster('html.py', method='mtime') == _cache_key_by_mtime('html.py')
+        >>> get_cache_buster(SRC_PATH, method='mtime') == _cache_key_by_mtime(SRC_PATH)
         True
-        >>> get_cache_buster('html.py', method='md5') == _cache_key_by_md5('html.py')
+        >>> get_cache_buster(SRC_PATH, method='md5') == _cache_key_by_md5(SRC_PATH)
         True
     """
     try:
