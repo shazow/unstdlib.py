@@ -56,15 +56,20 @@ def memoized(fn=None, cache=None):
 
     Example with a specific cache container::
 
-        >>> cache_container = {}
-        >>> @memoized(cache=cache_container)
-        ... def baz(quux):
+        >>> from unstdlib.standard.collections_ import RecentlyUsedContainer
+        >>> lru_container = RecentlyUsedContainer(maxsize=2)
+        >>> @memoized(cache=lru_container)
+        ... def baz(x):
         ...   print "Not cached."
-        >>> baz(quux=42)
+        >>> baz(1)
         Not cached.
-        >>> baz(quux=42)
-        >>> cache_container.clear()
-        >>> baz(quux=42)
+        >>> baz(1)
+        >>> baz(2)
+        Not cached.
+        >>> baz(3)
+        Not cached.
+        >>> baz(2)
+        >>> baz(1)
         Not cached.
     """
     if fn:
