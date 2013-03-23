@@ -54,18 +54,27 @@ def memoized(fn=None, cache=None):
         >>> foo(2)
         Not cached.
 
-    Example with a specific cache container::
+    Example with a specific cache container (in this case, the
+    ``RecentlyUsedContainer``, which will only store the ``maxsize`` most
+    recently accessed items)::
 
-        >>> cache_container = {}
-        >>> @memoized(cache=cache_container)
-        ... def baz(quux):
+        >>> from unstdlib.standard.collections_ import RecentlyUsedContainer
+        >>> lru_container = RecentlyUsedContainer(maxsize=2)
+        >>> @memoized(cache=lru_container)
+        ... def baz(x):
         ...   print "Not cached."
-        >>> baz(quux=42)
+        >>> baz(1)
         Not cached.
-        >>> baz(quux=42)
-        >>> cache_container.clear()
-        >>> baz(quux=42)
+        >>> baz(1)
+        >>> baz(2)
         Not cached.
+        >>> baz(3)
+        Not cached.
+        >>> baz(2)
+        >>> baz(1)
+        Not cached.
+        >>> # Notice that the '2' key remains, but the '1' key was evicted from
+        >>> # the cache.
     """
     if fn:
         # This is a hack to support both @memoize and @memoize(...)
