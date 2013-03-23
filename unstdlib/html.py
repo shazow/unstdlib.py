@@ -7,7 +7,7 @@ from unstdlib.standard.list_ import iterate_items
 
 
 __all__ = [
-    'get_cache_buster', 'html_tag', 'html_javascript_link', 'html_stylesheet_link',
+    'get_cache_buster', 'tag', 'javascript_link', 'stylesheet_link',
 ]
 
 
@@ -82,7 +82,7 @@ def _generate_dom_attrs(attrs, allow_no_value=True):
             yield '%s="%s"' % (key, value.replace('"', '\\"'))
 
 
-def html_tag(tagname, content='', attrs=None):
+def tag(tagname, content='', attrs=None):
     """ Helper for programmatically building HTML tags.
 
     Note that this barely does any escaping, and will happily spit out
@@ -100,13 +100,13 @@ def html_tag(tagname, content='', attrs=None):
 
     Example::
 
-        >>> html_tag('div', content='Hello, world.')
+        >>> tag('div', content='Hello, world.')
         '<div>Hello, world.</div>'
-        >>> html_tag('script', attrs={'src': '/static/js/core.js'})
+        >>> tag('script', attrs={'src': '/static/js/core.js'})
         '<script src="/static/js/core.js"></script>'
-        >>> html_tag('script', attrs=[('src', '/static/js/core.js'), ('type', 'text/javascript')])
+        >>> tag('script', attrs=[('src', '/static/js/core.js'), ('type', 'text/javascript')])
         '<script src="/static/js/core.js" type="text/javascript"></script>'
-        >>> html_tag('meta', content=None, attrs=dict(content='"quotedquotes"'))
+        >>> tag('meta', content=None, attrs=dict(content='"quotedquotes"'))
         '<meta content="\\\\"quotedquotes\\\\"" />'
     """
     attrs_str = attrs and ' '.join(_generate_dom_attrs(attrs))
@@ -118,7 +118,7 @@ def html_tag(tagname, content='', attrs=None):
     return '<%s />' % open_tag
 
 
-def html_javascript_link(src_url, src_path=None, cache_bust=None, content='', extra_attrs=None):
+def javascript_link(src_url, src_path=None, cache_bust=None, content='', extra_attrs=None):
     """ Helper for programmatically building HTML JavaScript source include
     links, with optional cache busting.
 
@@ -141,7 +141,7 @@ def html_javascript_link(src_url, src_path=None, cache_bust=None, content='', ex
 
     Example::
 
-        >>> html_javascript_link('/static/js/core.js')
+        >>> javascript_link('/static/js/core.js')
         '<script src="/static/js/core.js" type="text/javascript"></script>'
     """
     if cache_bust:
@@ -156,10 +156,10 @@ def html_javascript_link(src_url, src_path=None, cache_bust=None, content='', ex
     if extra_attrs:
         attrs.update(extra_attrs)
 
-    return html_tag('script', content=content, attrs=attrs)
+    return tag('script', content=content, attrs=attrs)
 
 
-def html_stylesheet_link(src_url, src_path=None, cache_bust=None, content='', extra_attrs=None):
+def stylesheet_link(src_url, src_path=None, cache_bust=None, content='', extra_attrs=None):
     """ Helper for programmatically building HTML StyleSheet source include
     links, with optional cache busting.
 
@@ -182,7 +182,7 @@ def html_stylesheet_link(src_url, src_path=None, cache_bust=None, content='', ex
 
     Example::
 
-        >>> html_stylesheet_link('/static/css/media.css')
+        >>> stylesheet_link('/static/css/media.css')
         '<link href="/static/css/media.css" rel="stylesheet"></link>'
     """
     if cache_bust:
@@ -197,7 +197,39 @@ def html_stylesheet_link(src_url, src_path=None, cache_bust=None, content='', ex
     if extra_attrs:
         attrs.update(extra_attrs)
 
-    return html_tag('link', content=content, attrs=attrs)
+    return tag('link', content=content, attrs=attrs)
+
+
+### Backwards compatibility (will be removed in v1.6):
+__all__ += ['html_tag', 'html_javascript_link', 'html_stylesheet_link']
+
+import warnings
+
+def html_tag(*args, **kw):
+    '''
+    This function has been renamed to `tag`. Use that instead.
+    Backwards-compatibility will be removed in v1.6.
+    '''
+    warnings.warn("Renamed to `tag`", DeprecationWarning)
+    return tag(*args, **kw)
+
+
+def html_javascript_link(*args, **kw):
+    '''
+    This function has been renamed to `javascript_link`. Use that instead.
+    Backwards-compatibility will be removed in v1.6.
+    '''
+    warnings.warn("Renamed to `javascript_link`", DeprecationWarning)
+    return javascript_link(*args, **kw)
+
+
+def html_stylesheet_link(*args, **kw):
+    '''
+    This function has been renamed to `stylesheet_link`. Use that instead.
+    Backwards-compatibility will be removed in v1.6.
+    '''
+    warnings.warn("Renamed to `stylesheet_link`", DeprecationWarning)
+    return stylesheet_link(*args, **kw)
 
 
 if __name__ == "__main__":

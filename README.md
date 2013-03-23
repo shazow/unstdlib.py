@@ -71,9 +71,9 @@ Use it in your code:
 ### [unstdlib.html](https://github.com/shazow/unstdlib.py/blob/master/unstdlib/html.py)
 
 * ``get_cache_buster(src_path, method='importtime')``
-* ``html_tag(tagname, content='', attrs=None)``
-* ``html_javascript_link(src_url, src_path=None, cache_bust=None, content='', extra_attrs=None)``
-* ``html_stylesheet_link(src_url, src_path=None, cache_bust=None, content='', extra_attrs=None)``
+* ``tag(tagname, content='', attrs=None)``
+* ``javascript_link(src_url, src_path=None, cache_bust=None, content='', extra_attrs=None)``
+* ``stylesheet_link(src_url, src_path=None, cache_bust=None, content='', extra_attrs=None)``
 
 
 ## Organization & Philosophy
