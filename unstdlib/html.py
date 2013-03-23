@@ -5,6 +5,13 @@ import time
 from unstdlib.standard.functools_ import memoized
 from unstdlib.standard.list_ import iterate_items
 
+try:
+    import markupsafe
+    MarkupType = markupsafe.Markup
+except ImportError:
+    MarkupType = unicode
+
+
 
 __all__ = [
     'get_cache_buster', 'tag', 'javascript_link', 'stylesheet_link',
@@ -82,6 +89,15 @@ def _generate_dom_attrs(attrs, allow_no_value=True):
             yield '%s="%s"' % (key, value.replace('"', '\\"'))
 
 
+class literal(MarkupType):
+    """ Wrapper type which represents an HTML literal that does not need to be
+    escaped. Will use `MarkupSafe` if available, otherwise it's a dumb
+    unicode-like object.
+    """
+    def __html__(self):
+        return self
+
+
 def tag(tagname, content='', attrs=None):
     """ Helper for programmatically building HTML tags.
 
@@ -114,8 +130,8 @@ def tag(tagname, content='', attrs=None):
     if attrs_str:
         open_tag += ' ' + attrs_str
     if content or isinstance(content, basestring):
-        return '<%s>%s</%s>' % (open_tag, content, tagname)
-    return '<%s />' % open_tag
+        return literal('<%s>%s</%s>' % (open_tag, content, tagname))
+    return literal('<%s />' % open_tag)
 
 
 def javascript_link(src_url, src_path=None, cache_bust=None, content='', extra_attrs=None):
