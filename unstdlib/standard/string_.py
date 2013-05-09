@@ -7,7 +7,8 @@ from .random_ import random
 
 __all__ = [
     'random_string',
-    'number_to_string', 'string_to_number', 'dollars_to_cents',
+    'number_to_string', 'string_to_number', 'number_to_bytes', 'bytes_to_number',
+    'dollars_to_cents',
     'to_str', 'to_unicode', 'to_int',
     'slugify',
 ]
