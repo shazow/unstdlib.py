@@ -82,6 +82,57 @@ def string_to_number(s, alphabet):
     return n
 
 
+def bytes_to_number(b):
+    """
+    Given a string ``b``, convert it to an integer.
+
+    Assumes bytes are 8 bits.
+
+    This is a special-case version of string_to_number with a full base-256
+    ASCII alphabet. It is the reverse of ``number_to_bytes(n)``.
+
+    Examples::
+
+        >>> bytes_to_number('*')
+        42
+        >>> bytes_to_number('\\xff')
+        255
+        >>> bytes_to_number('\\x00\\x01')
+        256
+    """
+    n = 0
+    for i, ch in enumerate(bytearray(b)):
+        n ^= ch << i * 8
+
+    return n
+
+
+def number_to_bytes(n):
+    """
+    Given an integer ``n``, convert it to a corresponding string.
+
+    Assumes bytes are 8 bits.
+
+    This is a special-case version of number_to_string with a full base-256
+    ASCII alphabet. It is the reverse of ``bytes_to_number(b)``.
+
+    Examples::
+
+        >>> number_to_bytes(42)
+        '*'
+        >>> number_to_bytes(255)
+        '\\xff'
+        >>> number_to_bytes(256)
+        '\\x00\\x01'
+    """
+    r = ''
+    while n:
+        n, ch = divmod(n, 256)
+        r += chr(ch)
+
+    return r
+
+
 def to_str(obj, encoding='utf-8', **encode_args):
     r"""
     Returns a ``str`` of ``obj``, encoding using ``encoding`` if necessary. For
