@@ -125,12 +125,12 @@ def number_to_bytes(n):
         >>> number_to_bytes(256)
         '\\x00\\x01'
     """
-    r = ''
+    b = ''
     while n:
         n, ch = divmod(n, 256)
-        r += chr(ch)
+        b += chr(ch)
 
-    return r
+    return b
 
 
 def to_str(obj, encoding='utf-8', **encode_args):
