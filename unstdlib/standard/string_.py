@@ -83,9 +83,16 @@ def string_to_number(s, alphabet):
     return n
 
 
-def bytes_to_number(b):
+def bytes_to_number(b, endian='big'):
     """
-    Given a string ``b``, convert it to an integer.
+    Convert a string to an integer.
+
+    :param b:
+        String or bytearray to convert.
+
+    :param endian:
+        Byte order to convert into ('big' or 'little' endian-ness, default
+        'big')
 
     Assumes bytes are 8 bits.
 
@@ -98,9 +105,14 @@ def bytes_to_number(b):
         42
         >>> bytes_to_number('\\xff')
         255
-        >>> bytes_to_number('\\x00\\x01')
+        >>> bytes_to_number('\\x01\\x00')
+        256
+        >>> bytes_to_number('\\x00\\x01', endian='little')
         256
     """
+    if endian == 'big':
+        b = reversed(b)
+
     n = 0
     for i, ch in enumerate(bytearray(b)):
         n ^= ch << i * 8
@@ -108,9 +120,16 @@ def bytes_to_number(b):
     return n
 
 
-def number_to_bytes(n):
+def number_to_bytes(n, endian='big'):
     """
-    Given an integer ``n``, convert it to a corresponding string.
+    Convert an integer to a corresponding string of bytes..
+
+    :param n:
+        Integer to convert.
+
+    :param endian:
+        Byte order to convert into ('big' or 'little' endian-ness, default
+        'big')
 
     Assumes bytes are 8 bits.
 
@@ -124,12 +143,17 @@ def number_to_bytes(n):
         >>> number_to_bytes(255)
         '\\xff'
         >>> number_to_bytes(256)
+        '\\x01\\x00'
+        >>> number_to_bytes(256, endian='little')
         '\\x00\\x01'
     """
     b = ''
     while n:
         n, ch = divmod(n, 256)
         b += chr(ch)
+
+    if endian == 'big':
+        return b[::-1]
 
     return b
 
