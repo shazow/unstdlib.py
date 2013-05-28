@@ -117,13 +117,13 @@ def tag(tagname, content='', attrs=None):
     Example::
 
         >>> tag('div', content='Hello, world.')
-        '<div>Hello, world.</div>'
+        u'<div>Hello, world.</div>'
         >>> tag('script', attrs={'src': '/static/js/core.js'})
-        '<script src="/static/js/core.js"></script>'
+        u'<script src="/static/js/core.js"></script>'
         >>> tag('script', attrs=[('src', '/static/js/core.js'), ('type', 'text/javascript')])
-        '<script src="/static/js/core.js" type="text/javascript"></script>'
+        u'<script src="/static/js/core.js" type="text/javascript"></script>'
         >>> tag('meta', content=None, attrs=dict(content='"quotedquotes"'))
-        '<meta content="\\\\"quotedquotes\\\\"" />'
+        u'<meta content="\\\\"quotedquotes\\\\"" />'
     """
     attrs_str = attrs and ' '.join(_generate_dom_attrs(attrs))
     open_tag = tagname
@@ -158,7 +158,7 @@ def javascript_link(src_url, src_path=None, cache_bust=None, content='', extra_a
     Example::
 
         >>> javascript_link('/static/js/core.js')
-        '<script src="/static/js/core.js" type="text/javascript"></script>'
+        u'<script src="/static/js/core.js" type="text/javascript"></script>'
     """
     if cache_bust:
         append_suffix = get_cache_buster(src_path=src_path, method=cache_bust)
@@ -199,7 +199,7 @@ def stylesheet_link(src_url, src_path=None, cache_bust=None, content='', extra_a
     Example::
 
         >>> stylesheet_link('/static/css/media.css')
-        '<link href="/static/css/media.css" rel="stylesheet"></link>'
+        u'<link href="/static/css/media.css" rel="stylesheet"></link>'
     """
     if cache_bust:
         append_suffix = get_cache_buster(src_path=src_path, method=cache_bust)
