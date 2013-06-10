@@ -7,7 +7,8 @@ from .random_ import random
 
 __all__ = [
     'random_string',
-    'number_to_string', 'string_to_number', 'dollars_to_cents',
+    'number_to_string', 'string_to_number', 'number_to_bytes', 'bytes_to_number',
+    'dollars_to_cents',
     'to_str', 'to_unicode', 'to_int',
     'slugify',
 ]
@@ -80,6 +81,81 @@ def string_to_number(s, alphabet):
         exp += 1
 
     return n
+
+
+def bytes_to_number(b, endian='big'):
+    """
+    Convert a string to an integer.
+
+    :param b:
+        String or bytearray to convert.
+
+    :param endian:
+        Byte order to convert into ('big' or 'little' endian-ness, default
+        'big')
+
+    Assumes bytes are 8 bits.
+
+    This is a special-case version of string_to_number with a full base-256
+    ASCII alphabet. It is the reverse of ``number_to_bytes(n)``.
+
+    Examples::
+
+        >>> bytes_to_number('*')
+        42
+        >>> bytes_to_number('\\xff')
+        255
+        >>> bytes_to_number('\\x01\\x00')
+        256
+        >>> bytes_to_number('\\x00\\x01', endian='little')
+        256
+    """
+    if endian == 'big':
+        b = reversed(b)
+
+    n = 0
+    for i, ch in enumerate(bytearray(b)):
+        n ^= ch << i * 8
+
+    return n
+
+
+def number_to_bytes(n, endian='big'):
+    """
+    Convert an integer to a corresponding string of bytes..
+
+    :param n:
+        Integer to convert.
+
+    :param endian:
+        Byte order to convert into ('big' or 'little' endian-ness, default
+        'big')
+
+    Assumes bytes are 8 bits.
+
+    This is a special-case version of number_to_string with a full base-256
+    ASCII alphabet. It is the reverse of ``bytes_to_number(b)``.
+
+    Examples::
+
+        >>> number_to_bytes(42)
+        '*'
+        >>> number_to_bytes(255)
+        '\\xff'
+        >>> number_to_bytes(256)
+        '\\x01\\x00'
+        >>> number_to_bytes(256, endian='little')
+        '\\x00\\x01'
+    """
+    b = ''
+    while n:
+        n, ch = divmod(n, 256)
+        b += chr(ch)
+
+    if endian == 'big':
+        return b[::-1]
+
+    return b
 
 
 def to_str(obj, encoding='utf-8', **encode_args):
