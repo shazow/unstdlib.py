@@ -37,6 +37,12 @@ class open_atomic(object):
           killed and re-started.
         * The temporary file will be blindly overwritten.
 
+    The ``temp_name`` and ``target_name`` attributes store the temporary
+    and target file names, and the ``name`` attribute stores the "current"
+    name: if the file is still being written, it will store the ``temp_name``,
+    and if the temporary file has been moved into place, it will store the
+    ``target_name``.
+
     .. note::
     
         ``open_atomic`` will appear to work on Windows, but will fail when the
@@ -51,7 +57,7 @@ class open_atomic(object):
         >>> f.temp_name
         '/tmp/.open_atomic-example.txt.temp'
         >>> f.write("Hello, world!")
-        >>> (os.path.exists(f.name), os.path.exists(f.temp_name))
+        >>> (os.path.exists(f.target_name), os.path.exists(f.temp_name))
         (False, True)
         >>> f.close()
         >>> os.path.exists("/tmp/open_atomic-example.txt")
@@ -77,9 +83,10 @@ class open_atomic(object):
 
     def __init__(self, name, prefix=".", suffix=".temp", dir=None, mode="w",
                  open_func=open, **open_args):
-        self.name = name
+        self.target_name = name
         self.temp_name = self._get_temp_name(name, prefix, suffix, dir)
         self.fd = open_func(self.temp_name, mode, **open_args)
+        self.name = self.temp_name
         self.closed = False
         self.aborted = False
         self.abort_error = None
@@ -96,7 +103,8 @@ class open_atomic(object):
             return
         try:
             self.fd.close()
-            os.rename(self.temp_name, self.name)
+            os.rename(self.temp_name, self.target_name)
+            self.name = self.target_name
         except:
             try:
                 self.abort()
