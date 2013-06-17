@@ -84,14 +84,28 @@ def truncate_datetime(t, resolution):
 
     return datetime.datetime(*args)
 
+def to_timezone(dt, timezone):
+    """
+    Return an aware datetime which is ``dt`` converted to ``timezone``.
+
+    If ``dt`` is naive, it is assumed to be UTC.
+
+    For example, if ``dt`` is "06:00 UTC+0000" and ``timezone`` is "EDT-0400",
+    then the result will be "02:00 EDT-0400".
+
+    This method follows the guidelines in http://pytz.sourceforge.net/
+    """
+    if dt.tzinfo is None:
+        dt = dt.replace(tzinfo=_UTC)
+    return timezone.normalize(dt.astimezone(timezone))
 
 def now(timezone=None):
     """
-    Return a datetime object for the given `timezone`. A `timezone` is any pytz-
-    like or datetime.tzinfo-like timezone object. If no timezone is given, then
-    UTC is assumed.
+    Return a naive datetime object for the given ``timezone``. A ``timezone``
+    is any pytz- like or datetime.tzinfo-like timezone object. If no timezone
+    is given, then UTC is assumed.
 
-    This method is best used with pytz installed:
+    This method is best used with pytz installed::
 
         pip install pytz
     """
@@ -99,10 +113,7 @@ def now(timezone=None):
     if not timezone:
         return d
 
-    d = d.replace(tzinfo=_UTC)
-    d = timezone.normalize(d.astimezone(timezone))
-    return d.replace(tzinfo=None)
-
+    return to_timezone(d, timezone).replace(tzinfo=None)
 
 def datetime_from_timestamp(timestamp):
     """
@@ -116,7 +127,10 @@ def datetime_from_timestamp(timestamp):
 
 def timestamp_from_datetime(dt):
     """
-    Returns a timestamp from naive datetime ``dt``.
+    Returns a timestamp from datetime ``dt``.
+
+    Note that timestamps are always UTC. If ``dt`` is aware, the resulting
+    timestamp will correspond to the correct UTC time.
 
     >>> timestamp_from_datetime(datetime.datetime(1970, 1, 1, 0, 20, 34, 500000))
     1234.5
