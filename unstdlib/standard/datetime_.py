@@ -121,7 +121,6 @@ def datetime_from_timestamp(timestamp):
 
     >>> datetime_from_timestamp(1234.5)
     datetime.datetime(1970, 1, 1, 0, 20, 34, 500000)
-    >>>
     """
     return datetime.datetime.utcfromtimestamp(timestamp)
 
@@ -134,7 +133,6 @@ def timestamp_from_datetime(dt):
 
     >>> timestamp_from_datetime(datetime.datetime(1970, 1, 1, 0, 20, 34, 500000))
     1234.5
-    >>>
     """
     return calendar.timegm(dt.utctimetuple()) + (dt.microsecond / 1000000.0)
 
