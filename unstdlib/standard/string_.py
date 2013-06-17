@@ -2,7 +2,13 @@ import re
 import string
 import unicodedata
 
-from unstdlib.six import string_types, u
+from unstdlib.six import text_type, PY3, string_types, binary_type, u
+from unstdlib.six.moves import xrange
+
+if PY3:
+    text_type_magicmethod = "__str__"
+else:
+    text_type_magicmethod = "__unicode__"
 
 from .random_ import random
 
@@ -19,10 +25,7 @@ __all__ = [
 
 _Default = object()
 
-ALPHABET_BASE62 = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
-
-
-def random_string(length=6, alphabet=ALPHABET_BASE62):
+def random_string(length=6, alphabet=string.ascii_letters+string.digits):
     """
     Return a random string of given length and alphabet.
 
@@ -45,7 +48,7 @@ def number_to_string(n, alphabet):
         >>> number_to_string(12345678, 'ab')
         'babbbbaaabbaaaababaabbba'
 
-        >>> number_to_string(12345678, string.letters + string.digits)
+        >>> number_to_string(12345678, string.ascii_letters + string.digits)
         'ZXP0'
 
         >>> number_to_string(12345, ['zero ', 'one ', 'two ', 'three ', 'four ', 'five ', 'six ', 'seven ', 'eight ', 'nine '])
@@ -78,7 +81,7 @@ def string_to_number(s, alphabet):
         >>> string_to_number('babbbbaaabbaaaababaabbba', 'ab')
         12345678
 
-        >>> string_to_number('ZXP0', string.letters + string.digits)
+        >>> string_to_number('ZXP0', string.ascii_letters + string.digits)
         12345678
 
     """
@@ -111,13 +114,13 @@ def bytes_to_number(b, endian='big'):
 
     Examples::
 
-        >>> bytes_to_number('*')
+        >>> bytes_to_number(b'*')
         42
-        >>> bytes_to_number('\\xff')
+        >>> bytes_to_number(b'\\xff')
         255
-        >>> bytes_to_number('\\x01\\x00')
+        >>> bytes_to_number(b'\\x01\\x00')
         256
-        >>> bytes_to_number('\\x00\\x01', endian='little')
+        >>> bytes_to_number(b'\\x00\\x01', endian='little')
         256
     """
     if endian == 'big':
@@ -173,7 +176,7 @@ def to_str(obj, encoding='utf-8', **encode_args):
     Returns a ``str`` of ``obj``, encoding using ``encoding`` if necessary. For
     example::
 
-        >>> some_str = "\xff"
+        >>> some_str = b"\xff"
         >>> some_unicode = u"\u1234"
         >>> some_exception = Exception(u'Error: ' + some_unicode)
         >>> to_str(some_str)
@@ -187,16 +190,19 @@ def to_str(obj, encoding='utf-8', **encode_args):
 
     See source code for detailed semantics.
     """
+    # Note: On py3, ``b'x'.__str__()`` returns ``"b'x'"``, so we need to do the
+    # explicit check first.
+    if isinstance(obj, binary_type):
+        return obj
+
     # We coerce to unicode if '__unicode__' is available because there is no
     # way to specify encoding when calling ``str(obj)``, so, eg,
     # ``str(Exception(u'\u1234'))`` will explode.
-    if isinstance(obj, unicode) or hasattr(obj, "__unicode__"):
+    if isinstance(obj, text_type) or hasattr(obj, text_type_magicmethod):
         # Note: unicode(u'foo') is O(1) (by experimentation)
-        return unicode(obj).encode(encoding, **encode_args)
+        return text_type(obj).encode(encoding, **encode_args)
 
-    # Note: it's just as fast to do `if isinstance(obj, str): return obj` as it
-    # is to simply return `str(obj)`.
-    return str(obj)
+    return binary_type(obj)
 
 
 def to_unicode(obj, encoding='utf-8', fallback='latin1', **decode_args):
@@ -206,9 +212,9 @@ def to_unicode(obj, encoding='utf-8', fallback='latin1', **decode_args):
 
     Examples::
 
-        >>> to_unicode('\xe1\x88\xb4')
+        >>> to_unicode(b'\xe1\x88\xb4')
         u'\u1234'
-        >>> to_unicode('\xff')
+        >>> to_unicode(b'\xff')
         u'\xff'
         >>> to_unicode(u'\u1234')
         u'\u1234'
@@ -220,14 +226,20 @@ def to_unicode(obj, encoding='utf-8', fallback='latin1', **decode_args):
     See source code for detailed semantics.
     """
 
-    if isinstance(obj, unicode) or hasattr(obj, "__unicode__"):
-        return unicode(obj)
+    # Note: on py3, the `bytes` type defines an unhelpful "__str__" function,
+    # so we need to do this check (see comments in ``to_str``).
+    if not isinstance(obj, binary_type):
+        if isinstance(obj, text_type) or hasattr(obj, text_type_magicmethod):
+            return text_type(obj)
 
-    obj_str = str(obj)
+        obj_str = binary_type(obj)
+    else:
+        obj_str = obj
+
     try:
-        return unicode(obj_str, encoding, **decode_args)
+        return text_type(obj_str, encoding, **decode_args)
     except UnicodeDecodeError:
-        return unicode(obj_str, fallback, **decode_args)
+        return text_type(obj_str, fallback, **decode_args)
 
 
 def to_int(s, default=0):
