@@ -22,6 +22,22 @@ __all__ = [
     'slugify',
 ]
 
+class r(object):
+    """
+    A normalized repr for bytes/unicode between Python2 and Python3.
+    """
+    def __init__(self, val):
+        self.val = val
+
+    def __repr__(self):
+        if PY3:
+            if isinstance(self.val, text_type):
+                return 'u' + repr(self.val)
+        else:
+            if isinstance(self.val, str):
+                return 'b' + repr(self.val)
+        return repr(self.val)
+
 
 _Default = object()
 
@@ -151,24 +167,30 @@ def number_to_bytes(n, endian='big'):
 
     Examples::
 
-        >>> number_to_bytes(42)
-        '*'
-        >>> number_to_bytes(255)
-        '\\xff'
-        >>> number_to_bytes(256)
-        '\\x01\\x00'
-        >>> number_to_bytes(256, endian='little')
-        '\\x00\\x01'
+        >>> r(number_to_bytes(42))
+        b'*'
+        >>> r(number_to_bytes(255))
+        b'\\xff'
+        >>> r(number_to_bytes(256))
+        b'\\x01\\x00'
+        >>> r(number_to_bytes(256, endian='little'))
+        b'\\x00\\x01'
     """
-    b = ''
+    res = []
     while n:
         n, ch = divmod(n, 256)
-        b += chr(ch)
+        if PY3:
+            res.append(ch)
+        else:
+            res.append(chr(ch))
 
     if endian == 'big':
-        return b[::-1]
+        res.reverse()
 
-    return b
+    if PY3:
+        return bytes(res)
+    else:
+        return ''.join(res)
 
 
 def to_str(obj, encoding='utf-8', **encode_args):
@@ -179,14 +201,14 @@ def to_str(obj, encoding='utf-8', **encode_args):
         >>> some_str = b"\xff"
         >>> some_unicode = u"\u1234"
         >>> some_exception = Exception(u'Error: ' + some_unicode)
-        >>> to_str(some_str)
-        '\xff'
-        >>> to_str(some_unicode)
-        '\xe1\x88\xb4'
-        >>> to_str(some_exception)
-        'Error: \xe1\x88\xb4'
-        >>> to_str([u'\u1234', 42])
-        "[u'\\u1234', 42]"
+        >>> r(to_str(some_str))
+        b'\xff'
+        >>> r(to_str(some_unicode))
+        b'\xe1\x88\xb4'
+        >>> r(to_str(some_exception))
+        b'Error: \xe1\x88\xb4'
+        >>> r(to_str([42]))
+        b'[42]'
 
     See source code for detailed semantics.
     """
@@ -212,16 +234,16 @@ def to_unicode(obj, encoding='utf-8', fallback='latin1', **decode_args):
 
     Examples::
 
-        >>> to_unicode(b'\xe1\x88\xb4')
+        >>> r(to_unicode(b'\xe1\x88\xb4'))
         u'\u1234'
-        >>> to_unicode(b'\xff')
+        >>> r(to_unicode(b'\xff'))
         u'\xff'
-        >>> to_unicode(u'\u1234')
+        >>> r(to_unicode(u'\u1234'))
         u'\u1234'
-        >>> to_unicode(Exception(u'\u1234'))
+        >>> r(to_unicode(Exception(u'\u1234')))
         u'\u1234'
-        >>> to_unicode([u'\u1234', 42])
-        u"[u'\\u1234', 42]"
+        >>> r(to_unicode([42]))
+        u'[42]'
 
     See source code for detailed semantics.
     """

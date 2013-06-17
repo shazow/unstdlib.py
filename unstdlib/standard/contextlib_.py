@@ -64,7 +64,7 @@ class open_atomic(object):
         >>> f = open_atomic("/tmp/open_atomic-example.txt")
         >>> f.temp_name
         '/tmp/.open_atomic-example.txt.temp'
-        >>> f.write("Hello, world!")
+        >>> f.write("Hello, world!") and None
         >>> (os.path.exists(f.target_name), os.path.exists(f.temp_name))
         (False, True)
         >>> f.close()
@@ -79,12 +79,12 @@ class open_atomic(object):
         ...                opener=io.open,
         ...                mode="w+",
         ...                encoding="utf-8")
-        >>> f.write(u"\u1234")
-        1L
+        >>> some_text = u"\u1234"
+        >>> f.write(some_text) and None
         >>> f.seek(0)
         0
-        >>> f.read()
-        u'\u1234'
+        >>> f.read() == some_text
+        True
         >>> f.close()
 
     """

@@ -19,7 +19,7 @@ def groupby_count(i, key=None, force_keys=None):
 
     Example::
 
-        >>> groupby_count([1, 1, 1, 2, 3])
+        >>> list(groupby_count([1, 1, 1, 2, 3]))
         [(1, 3), (2, 1), (3, 1)]
     """
     counter = defaultdict(lambda: 0)
