@@ -1,8 +1,10 @@
+import calendar
 import datetime
 
 
 __all__ = ['iterate_date', 'iterate_date_values', 'isoformat_as_datetime',
-           'truncate_datetime', 'now']
+           'truncate_datetime', 'now', 'datetime_from_timestamp',
+           'timestamp_from_datetime']
 
 
 def iterate_date(start, stop=None, step=datetime.timedelta(days=1)):
@@ -102,6 +104,25 @@ def now(timezone=None):
     return d.replace(tzinfo=None)
 
 
+def datetime_from_timestamp(timestamp):
+    """
+    Returns a datetime from UTC timestamp ``timestamp``.
+
+    >>> datetime_from_timestamp(1234.5)
+    datetime.datetime(1970, 1, 1, 0, 20, 34, 500000)
+    >>>
+    """
+    return datetime.datetime.utcfromtimestamp(timestamp)
+
+def timestamp_from_datetime(dt):
+    """
+    Returns a timestamp from UTC datetime ``dt``.
+
+    >>> timestamp_from_datetime(datetime.datetime(1970, 1, 1, 0, 20, 34, 500000))
+    1234.5
+    >>>
+    """
+    return calendar.timegm(dt.utctimetuple()) + (dt.microsecond / 1000000.0)
 
 # Built-in timezone for when pytz isn't available:
 
