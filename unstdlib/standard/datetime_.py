@@ -106,7 +106,7 @@ def now(timezone=None):
 
 def datetime_from_timestamp(timestamp):
     """
-    Returns a datetime from UTC timestamp ``timestamp``.
+    Returns a naive datetime from ``timestamp``.
 
     >>> datetime_from_timestamp(1234.5)
     datetime.datetime(1970, 1, 1, 0, 20, 34, 500000)
@@ -116,7 +116,7 @@ def datetime_from_timestamp(timestamp):
 
 def timestamp_from_datetime(dt):
     """
-    Returns a timestamp from UTC datetime ``dt``.
+    Returns a timestamp from naive datetime ``dt``.
 
     >>> timestamp_from_datetime(datetime.datetime(1970, 1, 1, 0, 20, 34, 500000))
     1234.5
