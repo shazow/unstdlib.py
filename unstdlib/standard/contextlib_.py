@@ -64,11 +64,11 @@ class open_atomic(object):
         True
 
     By default, ``open_atomic`` uses the ``open`` builtin, but this behaviour
-    can be changed using the ``open_func`` argument::
+    can be changed using the ``opener`` argument::
 
         >>> import io
         >>> f = open_atomic("/tmp/open_atomic-example.txt",
-        ...                open_func=io.open,
+        ...                opener=io.open,
         ...                mode="w+",
         ...                encoding="utf-8")
         >>> f.write(u"\u1234")
@@ -82,10 +82,10 @@ class open_atomic(object):
     """
 
     def __init__(self, name, prefix=".", suffix=".temp", dir=None, mode="w",
-                 open_func=open, **open_args):
+                 opener=open, **open_args):
         self.target_name = name
         self.temp_name = self._get_temp_name(name, prefix, suffix, dir)
-        self.fd = open_func(self.temp_name, mode, **open_args)
+        self.fd = opener(self.temp_name, mode, **open_args)
         self.name = self.temp_name
         self.closed = False
         self.aborted = False
