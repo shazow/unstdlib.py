@@ -1,5 +1,10 @@
 import os
 
+try:
+    replace_func = os.replace
+except AttributeError:
+    replace_func = os.rename
+
 def _doctest_setup():
     try:
         os.remove("/tmp/open_atomic-example.txt")
@@ -16,7 +21,7 @@ class open_atomic(object):
     below). If moving the temporary file fails, ``abort()`` will be called *and
     an exception will be raised*.
 
-    If ``abort()`` is called, the temporary file will be removed and the
+    If ``abort()`` is called the temporary file will be removed and the
     ``aborted`` attribute will be set to ``True``. No exception will be raised
     if an error is encountered while removing the temporary file; instead, the
     ``abort_error`` attribute will be set to the exception raised by
@@ -28,27 +33,30 @@ class open_atomic(object):
     directory as the target file:
     ``${dirname(target_file)}/.${basename(target_file)}.temp``. See also the
     ``prefix``, ``suffix``, and ``dir`` arguments to ``open_atomic()``. When
-    changing these options, though, remember:
+    changing these options, remember:
 
-        * Moving files across filesystems is slow, so the temporary file should
-          be stored on the same filesystem as the target file.
-        * Using a random temporary name is likely a poor idea, as it's more
-          likely that temporary files will be left lying around if a process is
-          killed and re-started.
+        * The source and the destination must be on the same filesystem,
+          otherwise the call to ``os.replace()``/``os.rename()`` may fail (and
+          it *will* be much slower than necessary).
+        * Using a random temporary name is likely a poor idea, as random names
+          will mean it's more likely that temporary files will be left
+          abandoned if a process is killed and re-started.
         * The temporary file will be blindly overwritten.
 
     The ``temp_name`` and ``target_name`` attributes store the temporary
     and target file names, and the ``name`` attribute stores the "current"
-    name: if the file is still being written, it will store the ``temp_name``,
-    and if the temporary file has been moved into place, it will store the
+    name: if the file is still being written it will store the ``temp_name``,
+    and if the temporary file has been moved into place it will store the
     ``target_name``.
 
     .. note::
-    
-        ``open_atomic`` will appear to work on Windows, but will fail when the
-        destination file exists, since ``os.rename`` will not overwrite the
-        destination file (specifically, the call to ``close()`` will result in
-        an exception being raised, and ``abort()`` being called).
+
+        ``open_atomic`` will not work correctly on Windows with Python 2.X or
+        Python <= 3.2: the call to ``open_atomic.close()`` will fail when the
+        destination file exists (since ``os.rename`` will not overwrite the
+        destination file; an exception will be raised and ``abort()`` will be
+        called). On Python 3.3 and up ``os.replace`` will be used, which
+        will be safe and atomic on both Windows and Unix.
 
     Example::
 
@@ -85,7 +93,7 @@ class open_atomic(object):
                  opener=open, **open_args):
         self.target_name = name
         self.temp_name = self._get_temp_name(name, prefix, suffix, dir)
-        self.fd = opener(self.temp_name, mode, **open_args)
+        self.file = opener(self.temp_name, mode, **open_args)
         self.name = self.temp_name
         self.closed = False
         self.aborted = False
@@ -102,8 +110,8 @@ class open_atomic(object):
         if self.closed:
             return
         try:
-            self.fd.close()
-            os.rename(self.temp_name, self.target_name)
+            self.file.close()
+            replace_func(self.temp_name, self.target_name)
             self.name = self.target_name
         except:
             try:
@@ -120,11 +128,11 @@ class open_atomic(object):
                 # safety and close it before deleting it here. This is only a
                 # problem if ``.close()`` raises an exception, which it really
                 # shouldn't... But it's probably a better idea to be safe.
-                self.fd.close()
+                self.file.close()
             os.remove(self.temp_name)
         except OSError as e:
             self.abort_error = e
-        self.fd.close()
+        self.file.close()
         self.closed = True
         self.aborted = True
 
@@ -138,4 +146,4 @@ class open_atomic(object):
             self.abort()
 
     def __getattr__(self, attr):
-        return getattr(self.fd, attr)
+        return getattr(self.file, attr)
