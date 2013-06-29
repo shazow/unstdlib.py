@@ -86,7 +86,7 @@ Django-specific code).
 
 * ``unstdlib.standard`` contains code that does not require additional
 dependencies on top of Python 2.5.
-* ``unstdlib.sqlalchemy`` (someday) contains code that is SQLAlchemy-specific.
+* ``unstdlib.sqlalchemy`` contains code that is SQLAlchemy-specific.
 * ``unstdlib.django`` (someday) contains code that is Django-specific.
 
 We value simplicity and elegance over robustness and optimization. This library
