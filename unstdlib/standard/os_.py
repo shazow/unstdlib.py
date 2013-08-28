@@ -1,8 +1,10 @@
 import os
 
 class chdir(object):
-    """ A drop-in replacement for ``os.chdir`` which also acts as a context
-        manager.
+    """ A drop-in replacement for ``os.chdir`` which can also be used as a
+    context manager.
+
+    Example::
 
         >>> old_cwd = os.getcwd()
         >>> with chdir("/usr/"):
@@ -19,7 +21,7 @@ class chdir(object):
         >>> x.unchdir()
         >>> os.getcwd() == old_cwd
         True
-        """
+    """
 
     def __init__(self, new_path, old_path=None):
         self.old_path = old_path or os.getcwd()
