@@ -24,10 +24,9 @@ class chdir(object):
     def __init__(self, new_path, old_path=None):
         self.old_path = old_path or os.getcwd()
         self.new_path = new_path
-        os.chdir(self.new_path)
+        self.chdir()
 
     def __enter__(self):
-        self.chdir()
         return self
 
     def __exit__(self, *args):
