@@ -5,7 +5,7 @@ from list_ import iterate_items
 
 
 __all__ = [
-    'memoized', 'memoized_property', 'assert_hashable', 'deprecate',
+    'memoized', 'memoized_property', 'assert_hashable', 'deprecated',
 ]
 
 
@@ -124,7 +124,7 @@ class memoized_property(object):
         return result
 
 
-def deprecate(message, exception=PendingDeprecationWarning):
+def deprecated(message, exception=PendingDeprecationWarning):
     """Throw a warning when a function/method will be soon deprecated
 
     Supports passing a ``message`` and an ``exception`` class
@@ -137,7 +137,7 @@ def deprecate(message, exception=PendingDeprecationWarning):
         >>> import warnings
         >>> from functools import wraps
         >>> message = "this function will be deprecated in the near future"
-        >>> @deprecate(message)
+        >>> @deprecated(message)
         ... def foo(n):
         ...     return n+n
         >>> with warnings.catch_warnings(record=True) as w:
