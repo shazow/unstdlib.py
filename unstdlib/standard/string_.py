@@ -47,6 +47,8 @@ def number_to_string(n, alphabet):
     result = ''
     base = len(alphabet)
     current = int(n)
+    if current < 0:
+        raise ValueError("invalid n (must be non-negative): %s", n)
     while current:
         result = alphabet[current % base] + result
         current = current // base
