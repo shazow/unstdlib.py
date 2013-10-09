@@ -10,8 +10,12 @@ __all__ = [
     'number_to_string', 'string_to_number', 'number_to_bytes', 'bytes_to_number',
     'dollars_to_cents',
     'to_str', 'to_unicode', 'to_int',
+    'format_int',
     'slugify',
 ]
+
+
+_Default = object()
 
 
 def random_string(length=6, alphabet=string.letters+string.digits):
@@ -245,6 +249,49 @@ def to_int(s, default=0):
         return int(s)
     except (TypeError, ValueError):
         return default
+
+
+def format_int(n, singular=_Default, plural=_Default):
+    """
+    Return `singular.format(n)` if n is 1, or `plural.format(n)` otherwise. If
+    plural is not specified, then it is assumed to be same as singular but
+    suffixed with an 's'.
+
+    :param n:
+        Integer which determines pluralness.
+
+    :param singular:
+        String with a format() placeholder for n. (Default: `u"{:,}"`)
+
+    :param plural:
+        String with a format() placeholder for n. (Default: If singular is not
+        default, then it's `singular + u"s"`. Otherwise it's same as singular.)
+
+    Example: ::
+
+        >>> format_int(1000)
+        u'1,000'
+        >>> format_int(1, u"{} day")
+        u'1 day'
+        >>> format_int(2, u"{} day")
+        u'2 days'
+        >>> format_int(2, u"{} box", u"{} boxen")
+        u'2 boxen'
+        >>> format_int(20000, u"{:,} box", u"%d boxen")
+        u'20,000 boxen'
+    """
+    n = int(n)
+
+    if plural is _Default:
+        plural = singular is not _Default and singular
+
+    if singular in (None, _Default):
+        singular = '{:,}'
+
+    if n == 1 or not plural:
+        return singular.format(n)
+
+    return plural.format(n)
 
 
 def dollars_to_cents(s, allow_negative=False):
