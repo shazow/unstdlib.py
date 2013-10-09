@@ -282,11 +282,14 @@ def format_int(n, singular=_Default, plural=_Default):
     """
     n = int(n)
 
-    if plural is _Default:
-        plural = singular is not _Default and singular
-
     if singular in (None, _Default):
-        singular = '{:,}'
+        if plural is _Default:
+            plural = None
+
+        singular = u'{:,}'
+
+    elif plural is _Default:
+        plural = singular + u's'
 
     if n == 1 or not plural:
         return singular.format(n)
