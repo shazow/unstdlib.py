@@ -42,6 +42,7 @@ Use it in your code:
 * ``functools_.assert_hashable(*args, **kw)``
 * ``@functools_.memoized(fn=None, cache=None)``
 * ``@functools_.memoized_property(object)``
+* ``@functools_.deprecated(message, exception=PendingDeprecationWarning)``
 * ``list_.groupby_count(i, key=None, force_keys=None)``
 * ``list_.iterate(maybe_iter, unless=(basestring, dict))``
 * ``list_.is_iterable(maybe_iter, unless=(basestring, dict))``
