@@ -91,7 +91,7 @@ def memoized(fn=None, cache=None):
 
             try:
                 is_cached = key in cache
-            except TypeError, e:
+            except TypeError as e:
                 # Re-raise a more descriptive error if it's a hashing problem.
                 assert_hashable(*args, **kw)
                 # If it hasn't raised by now, then something else is going on,

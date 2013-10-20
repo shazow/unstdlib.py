@@ -33,7 +33,7 @@ def convert_exception(from_exception, to_exception, *to_args, **to_kw):
         def fn_new(*args, **kw):
             try:
                 return fn(*args, **kw)
-            except from_exception, e:
+            except from_exception as e:
                 raise to_exception(*to_args, **to_kw), None, sys.exc_info()[2]
 
         fn_new.__doc__ = fn.__doc__

@@ -4,7 +4,7 @@ from distutils.core import setup
 
 try:
     import setuptools
-except ImportError, _:
+except ImportError:
     pass # No 'develop' command, oh well.
 
 version = '1.5.3'
