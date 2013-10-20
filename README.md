@@ -59,6 +59,7 @@ Use it in your code:
 * ``string_.to_int(s, default=0)``
 * ``string_.slugify(s, delimiter='-')``
 * ``type_.is_subclass(o, bases)``
+* ``os_.chdir(new_dir)``: like ``os.chdir``, but also a context manager: ``with chdir("/tmp/"): pass``
 
 ### [unstdlib.formencode](https://github.com/shazow/unstdlib.py/blob/master/unstdlib/formencode.py)
 
