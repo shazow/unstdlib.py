@@ -2,6 +2,8 @@ from itertools import chain
 from functools import wraps
 from collections import defaultdict
 
+from unstdlib.six import string_types
+
 
 __all__ = [
     'groupby_count',
@@ -33,7 +35,7 @@ def groupby_count(i, key=None, force_keys=None):
     return counter.items()
 
 
-def is_iterable(maybe_iter, unless=(basestring, dict)):
+def is_iterable(maybe_iter, unless=(string_types, dict)):
     """ Return whether ``maybe_iter`` is an iterable, unless it's an instance of one
     of the base class, or tuple of base classes, given in ``unless``.
 
@@ -55,7 +57,7 @@ def is_iterable(maybe_iter, unless=(basestring, dict)):
     return not isinstance(maybe_iter, unless)
 
 
-def iterate(maybe_iter, unless=(basestring, dict)):
+def iterate(maybe_iter, unless=(string_types, dict)):
     """ Always return an iterable.
 
     Returns ``maybe_iter`` if it is an iterable, otherwise it returns a single

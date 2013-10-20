@@ -10,15 +10,15 @@ def is_subclass(o, bases):
 
     Example::
 
-        >>> is_subclass(str, basestring)
+        >>> is_subclass(IOError, Exception)
         True
-        >>> is_subclass(str, None)
+        >>> is_subclass(Exception, None)
         False
-        >>> is_subclass(None, str)
+        >>> is_subclass(None, Exception)
         False
-        >>> is_subclass(str, (None, basestring))
+        >>> is_subclass(IOError, (None, Exception))
         True
-        >>> is_subclass(str, (None, 42))
+        >>> is_subclass(Exception, (None, 42))
         False
     """
     try:

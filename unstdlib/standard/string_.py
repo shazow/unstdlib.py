@@ -2,6 +2,8 @@ import re
 import string
 import unicodedata
 
+from unstdlib.six import string_types
+
 from .random_ import random
 
 
@@ -14,7 +16,10 @@ __all__ = [
 ]
 
 
-def random_string(length=6, alphabet=string.letters+string.digits):
+ALPHABET_BASE62 = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+
+
+def random_string(length=6, alphabet=ALPHABET_BASE62):
     """
     Return a random string of given length and alphabet.
 
@@ -266,7 +271,7 @@ def dollars_to_cents(s, allow_negative=False):
     if not s:
         return
 
-    if isinstance(s, basestring):
+    if isinstance(s, string_types):
         s = s.lstrip('$')
 
     dollars = int(round(float(s) * 100))
