@@ -36,7 +36,7 @@ def iterate_date_values(d, start_date=None, stop_date=None, default=0):
         yield cur_val
         try:
             cur_day, cur_val = next(dataiter)
-        except StopIteration, e:
+        except StopIteration:
             if not stop_date:
                 raise
 
