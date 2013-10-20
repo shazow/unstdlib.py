@@ -57,6 +57,7 @@ Use it in your code:
 * ``string_.to_str(obj, encoding='utf-8', **encode_args)``
 * ``string_.to_unicode(obj, encoding='utf-8', fallback='latin1', **decode_args)``
 * ``string_.to_int(s, default=0)``
+* ``string_.format_int(n, singular=_Default, plural=_Default)``
 * ``string_.slugify(s, delimiter='-')``
 * ``type_.is_subclass(o, bases)``
 * ``os_.chdir(new_dir)``: like ``os.chdir``, but also a context manager: ``with chdir("/tmp/"): pass``
