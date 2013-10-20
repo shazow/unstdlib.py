@@ -2,7 +2,7 @@ import re
 import string
 import unicodedata
 
-from unstdlib.six import string_types
+from unstdlib.six import string_types, u
 
 from .random_ import random
 
@@ -287,7 +287,7 @@ def slugify(s, delimiter='-'):
     """
     Normalize `s` into ASCII and replace non-word characters with `delimiter`.
     """
-    s = unicodedata.normalize('NFKD', unicode(s)).encode('ascii', 'ignore').decode('ascii')
+    s = unicodedata.normalize('NFKD', u(s)).encode('ascii', 'ignore').decode('ascii')
     return RE_SLUG.sub(delimiter, s).strip(delimiter).lower()
 
 
