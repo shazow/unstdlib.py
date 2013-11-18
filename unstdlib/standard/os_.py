@@ -16,8 +16,6 @@ class chdir(object):
         >>> x = chdir("/usr/")
         >>> os.getcwd()
         '/usr'
-        >>> x
-        chdir('/usr/', old_path='...')
         >>> x.unchdir()
         >>> os.getcwd() == old_cwd
         True
