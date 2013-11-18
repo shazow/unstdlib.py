@@ -281,7 +281,7 @@ def format_int(n, singular=_Default, plural=_Default):
         u'2 days'
         >>> format_int(2, u"{} box", u"{} boxen")
         u'2 boxen'
-        >>> format_int(20000, u"{:,} box", u"%d boxen")
+        >>> format_int(20000, u"{:,} box", u"{:,} boxen")
         u'20,000 boxen'
     """
     n = int(n)
