@@ -307,15 +307,15 @@ def format_int(n, singular=_Default, plural=_Default):
 
     Example: ::
 
-        >>> format_int(1000)
+        >>> r(format_int(1000))
         u'1,000'
-        >>> format_int(1, u"{} day")
+        >>> r(format_int(1, u"{} day"))
         u'1 day'
-        >>> format_int(2, u"{} day")
+        >>> r(format_int(2, u"{} day"))
         u'2 days'
-        >>> format_int(2, u"{} box", u"{} boxen")
+        >>> r(format_int(2, u"{} box", u"{} boxen"))
         u'2 boxen'
-        >>> format_int(20000, u"{:,} box", u"{:,} boxen")
+        >>> r(format_int(20000, u"{:,} box", u"{:,} boxen"))
         u'20,000 boxen'
     """
     n = int(n)
