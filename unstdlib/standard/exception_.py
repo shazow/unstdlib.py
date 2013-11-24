@@ -1,6 +1,6 @@
 import sys
 
-from unstdlib.six import reraise
+from unstdlib.six import reraise, PY3
 
 
 __all__ = ['convert_exception']
@@ -39,7 +39,11 @@ def convert_exception(from_exception, to_exception, *to_args, **to_kw):
             except from_exception:
                 new_exception = to_exception(*to_args, **to_kw)
                 traceback = sys.exc_info()[2]
-                reraise(new_exception, None, traceback)
+                if PY3:
+                    value = new_exception
+                else:
+                    value = None
+                reraise(new_exception, value, traceback)
 
         fn_new.__doc__ = fn.__doc__
         return fn_new
