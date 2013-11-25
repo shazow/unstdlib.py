@@ -13,12 +13,12 @@ class TestRecentlyUsedContainer(unittest.TestCase):
     def test_maxsize(self):
         d = RecentlyUsedContainer(5)
 
-        for i in xrange(5):
+        for i in range(5):
             d[i] = str(i)
 
         self.assertEqual(len(d), 5)
 
-        for i in xrange(5):
+        for i in range(5):
             self.assertEqual(d[i], str(i))
 
         d[i+1] = str(i+1)

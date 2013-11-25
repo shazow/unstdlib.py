@@ -1,7 +1,7 @@
 from functools import wraps
 import warnings
 
-from list_ import iterate_items
+from .list_ import iterate_items
 
 
 __all__ = [
@@ -48,7 +48,7 @@ def memoized(fn=None, cache=None):
 
         >>> @memoized
         ... def foo(bar):
-        ...   print "Not cached."
+        ...   print("Not cached.")
         >>> foo(1)
         Not cached.
         >>> foo(1)
@@ -63,7 +63,7 @@ def memoized(fn=None, cache=None):
         >>> lru_container = RecentlyUsedContainer(maxsize=2)
         >>> @memoized(cache=lru_container)
         ... def baz(x):
-        ...   print "Not cached."
+        ...   print("Not cached.")
         >>> baz(1)
         Not cached.
         >>> baz(1)

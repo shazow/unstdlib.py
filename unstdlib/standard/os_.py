@@ -8,7 +8,7 @@ class chdir(object):
 
         >>> old_cwd = os.getcwd()
         >>> with chdir("/usr/"):
-        ...     print "current dir:", os.getcwd()
+        ...     print("current dir: {0}".format(os.getcwd()))
         ...
         current dir: /usr
         >>> os.getcwd() == old_cwd
@@ -16,8 +16,6 @@ class chdir(object):
         >>> x = chdir("/usr/")
         >>> os.getcwd()
         '/usr'
-        >>> x
-        chdir('/usr/', old_path='...')
         >>> x.unchdir()
         >>> os.getcwd() == old_cwd
         True
