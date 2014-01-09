@@ -109,7 +109,6 @@ def memoized(fn=None, cache=None):
     return decorator
 
 
-
 # `memoized_property` is lovingly borrowed from @zzzeek, with permission:
 #   https://twitter.com/zzzeek/status/310503354268790784
 class memoized_property(object):
@@ -143,7 +142,7 @@ def memoized_method(method=None, cache_factory=None):
         ...         self._name = name
         ...     @memoized_method
         ...     def get_name(self):
-        ...         print "Calling get_name on %r" %(self._name, )
+        ...         print("Calling get_name on %r" %(self._name, ))
         ...         return self._name
         >>> shazow = Person("shazow")
         >>> shazow.get_name()
@@ -160,7 +159,7 @@ def memoized_method(method=None, cache_factory=None):
         >>> class Foo(object):
         ...     @memoized_method(cache_factory=lambda: RecentlyUsedContainer(maxsize=2))
         ...     def add(self, a, b):
-        ...         print "Calling add with %r and %r" %(a, b)
+        ...         print("Calling add with %r and %r" %(a, b))
         ...         return a + b
         >>> foo = Foo()
         >>> foo.add(1, 1)
