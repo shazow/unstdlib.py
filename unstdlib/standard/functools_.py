@@ -113,10 +113,10 @@ def memoized(fn=None, cache=None):
 #   https://twitter.com/zzzeek/status/310503354268790784
 class memoized_property(object):
     """ A read-only @property that is only evaluated once. """
-    def __init__(self, fget, doc=None):
+    def __init__(self, fget, doc=None, name=None):
         self.fget = fget
         self.__doc__ = doc or fget.__doc__
-        self.__name__ = fget.__name__
+        self.__name__ = name or fget.__name__
 
     def __get__(self, obj, cls):
         if obj is None:
