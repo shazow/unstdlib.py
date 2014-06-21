@@ -2,6 +2,7 @@ import os.path
 import hashlib
 import time
 import operator
+import functools
 
 from unstdlib.standard.functools_ import memoized
 from unstdlib.standard.list_ import iterate_items, iterate
@@ -139,6 +140,21 @@ def tag(tagname, content='', attrs=None):
 
     content = reduce(operator.add, iterate(content, unless=(basestring, literal)))
     return literal('<%s>%s</%s>' % (open_tag, content, tagname))
+
+
+def tag_builder(tagnames):
+    """ Create tag-generating callables for more DSL-y goodness.
+
+    :param tagnames:
+        List of tag names to generate builders for.
+
+    Example::
+
+        >>> ul, li = tag_builder(['ul', 'li'])
+        >>> ul(li(ch) for ch in 'abc')
+        u'<ul><li>a</li><li>b</li><li>c</li></ul>'
+    """
+    return [functools.partial(tag, t) for t in tagnames]
 
 
 def javascript_link(src_url, src_path=None, cache_bust=None, content='', extra_attrs=None):
