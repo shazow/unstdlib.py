@@ -134,7 +134,7 @@ def tag(tagname, content='', attrs=None):
     if attrs_str:
         open_tag += ' ' + attrs_str
 
-    if not content:
+    if content is None:
         return literal('<%s />' % open_tag)
 
     content = reduce(operator.add, iterate(content, unless=(basestring, literal)))
