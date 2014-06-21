@@ -16,7 +16,8 @@ except ImportError:
 
 
 __all__ = [
-    'get_cache_buster', 'literal', 'tag', 'javascript_link', 'stylesheet_link',
+    'get_cache_buster', 'literal', 'tag', 'tag_builder',
+    'javascript_link', 'stylesheet_link',
 ]
 
 
