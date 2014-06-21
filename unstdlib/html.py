@@ -1,9 +1,10 @@
 import os.path
 import hashlib
 import time
+import operator
 
 from unstdlib.standard.functools_ import memoized
-from unstdlib.standard.list_ import iterate_items
+from unstdlib.standard.list_ import iterate_items, iterate
 
 try:
     import markupsafe
@@ -109,7 +110,8 @@ def tag(tagname, content='', attrs=None):
 
     :param content:
         Optional content of the DOM element. If `None`, then the element is
-        self-closed. By default, the content is an empty string.
+        self-closed. By default, the content is an empty string. Supports
+        iterables like generators.
 
     :param attrs:
         Optional dictionary-like collection of attributes for the DOM element.
@@ -124,14 +126,19 @@ def tag(tagname, content='', attrs=None):
         u'<script src="/static/js/core.js" type="text/javascript"></script>'
         >>> tag('meta', content=None, attrs=dict(content='"quotedquotes"'))
         u'<meta content="\\\\"quotedquotes\\\\"" />'
+        >>> tag('ul', (tag('li', str(i)) for i in xrange(3)))
+        u'<ul><li>0</li><li>1</li><li>2</li></ul>'
     """
     attrs_str = attrs and ' '.join(_generate_dom_attrs(attrs))
     open_tag = tagname
     if attrs_str:
         open_tag += ' ' + attrs_str
-    if content or isinstance(content, basestring):
-        return literal('<%s>%s</%s>' % (open_tag, content, tagname))
-    return literal('<%s />' % open_tag)
+
+    if content is None:
+        return literal('<%s />' % open_tag)
+
+    content = reduce(operator.add, iterate(content, unless=(basestring, literal)))
+    return literal('<%s>%s</%s>' % (open_tag, content, tagname))
 
 
 def javascript_link(src_url, src_path=None, cache_bust=None, content='', extra_attrs=None):
