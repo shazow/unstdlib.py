@@ -223,38 +223,6 @@ def stylesheet_link(src_url, src_path=None, cache_bust=None, content='', extra_a
     return tag('link', content=content, attrs=attrs)
 
 
-### Backwards compatibility (will be removed in v1.6):
-__all__ += ['html_tag', 'html_javascript_link', 'html_stylesheet_link']
-
-import warnings
-
-def html_tag(*args, **kw):
-    '''
-    This function has been renamed to `tag`. Use that instead.
-    Backwards-compatibility will be removed in v1.6.
-    '''
-    warnings.warn("Renamed to `tag`", DeprecationWarning)
-    return tag(*args, **kw)
-
-
-def html_javascript_link(*args, **kw):
-    '''
-    This function has been renamed to `javascript_link`. Use that instead.
-    Backwards-compatibility will be removed in v1.6.
-    '''
-    warnings.warn("Renamed to `javascript_link`", DeprecationWarning)
-    return javascript_link(*args, **kw)
-
-
-def html_stylesheet_link(*args, **kw):
-    '''
-    This function has been renamed to `stylesheet_link`. Use that instead.
-    Backwards-compatibility will be removed in v1.6.
-    '''
-    warnings.warn("Renamed to `stylesheet_link`", DeprecationWarning)
-    return stylesheet_link(*args, **kw)
-
-
 if __name__ == "__main__":
     import doctest
     doctest.testmod(optionflags=doctest.ELLIPSIS)
