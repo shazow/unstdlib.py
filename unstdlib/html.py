@@ -1,7 +1,6 @@
 import os.path
 import hashlib
 import time
-import operator
 import functools
 
 from unstdlib.standard.functools_ import memoized
