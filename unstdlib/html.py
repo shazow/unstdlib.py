@@ -79,11 +79,15 @@ def get_cache_buster(src_path, method='importtime'):
 def _generate_dom_attrs(attrs, allow_no_value=True):
     """ Yield compiled DOM attribute key-value strings.
 
-    If the value is `True`, then it is treated as no-value."""
+    If the value is `True`, then it is treated as no-value. If `None`, then it
+    is skipped.
+    """
     for attr in iterate_items(attrs):
         if isinstance(attr, basestring):
             attr = (attr, True)
         key, value = attr
+        if value is None:
+            continue
         if value is True and not allow_no_value:
             value = key  # E.g. <option checked="true" />
         if value is True:
@@ -139,7 +143,7 @@ def tag(tagname, content='', attrs=None):
     if content is None:
         return literal('<%s />' % open_tag)
 
-    content = reduce(operator.add, iterate(content, unless=(basestring, literal)))
+    content = ''.join(iterate(content, unless=(basestring, literal)))
     return literal('<%s>%s</%s>' % (open_tag, content, tagname))
 
 
