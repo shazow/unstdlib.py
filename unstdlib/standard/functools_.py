@@ -5,7 +5,8 @@ from .list_ import iterate_items
 
 
 __all__ = [
-    'memoized', 'memoized_property', 'assert_hashable', 'deprecated',
+    'memoized', 'memoized_property', 'memoized_method',
+    'assert_hashable', 'deprecated',
 ]
 
 
