@@ -89,7 +89,7 @@ class open_atomic(object):
 
     """
 
-    def __init__(self, name, prefix=".", suffix=".temp", dir=None, mode="w",
+    def __init__(self, name, mode="w", prefix=".", suffix=".temp", dir=None,
                  opener=open, **open_args):
         self.target_name = name
         self.temp_name = self._get_temp_name(name, prefix, suffix, dir)
