@@ -221,6 +221,7 @@ def deprecated(message, exception=PendingDeprecationWarning):
         ...     assert len(w) == 1
         ...     assert issubclass(w[-1].category, PendingDeprecationWarning)
         ...     assert message == str(w[-1].message)
+        ...     assert foo.__name__ == 'foo'
         8
     """
     def decorator(func):
