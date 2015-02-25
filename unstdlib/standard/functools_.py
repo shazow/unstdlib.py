@@ -225,7 +225,7 @@ def deprecated(message, exception=PendingDeprecationWarning):
         8
     """
     def decorator(func):
-        wraps(func)
+        @wraps(func)
         def wrapper(*args, **kwargs):
             warnings.warn(message, exception, stacklevel=2)
             return func(*args, **kwargs)
