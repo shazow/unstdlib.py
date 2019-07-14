@@ -3,6 +3,7 @@ import hashlib
 import time
 import functools
 
+from unstdlib.six import text_type, string_types
 from unstdlib.standard.functools_ import memoized
 from unstdlib.standard.list_ import iterate_items, iterate
 
@@ -10,7 +11,7 @@ try:
     import markupsafe
     MarkupType = markupsafe.Markup
 except ImportError:
-    MarkupType = unicode
+    MarkupType = text_type
 
 
 
@@ -82,7 +83,7 @@ def _generate_dom_attrs(attrs, allow_no_value=True):
     is skipped.
     """
     for attr in iterate_items(attrs):
-        if isinstance(attr, basestring):
+        if isinstance(attr, string_types):
             attr = (attr, True)
         key, value = attr
         if value is None:
