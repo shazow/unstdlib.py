@@ -4,7 +4,7 @@ python:
   - 3.7
   - nightly
 install:
-  - pip install nose pytz --use-mirrors
+  - pip install nose pytz
 script:
   - nosetests --with-doctest test/ unstdlib/standard/
 email:
