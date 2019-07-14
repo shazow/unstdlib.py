@@ -7,6 +7,3 @@ install:
   - pip install nose pytz
 script:
   - nosetests --with-doctest test/ unstdlib/standard/
-email:
-    on_success: change
-    on_failure: change
