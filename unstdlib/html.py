@@ -143,7 +143,7 @@ def tag(tagname, content='', attrs=None):
     if content is None:
         return literal('<%s />' % open_tag)
 
-    content = ''.join(iterate(content, unless=(basestring, literal)))
+    content = ''.join(iterate(content, unless=string_types + (literal,)))
     return literal('<%s>%s</%s>' % (open_tag, content, tagname))
 
 
