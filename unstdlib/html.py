@@ -26,6 +26,8 @@ def _cache_key_by_md5(src_path, chunk_size=65536):
     hash = hashlib.md5()
     with open(src_path, 'rb') as f:
         for chunk in iter(lambda: f.read(65536), ''):
+            if len(chunk) == 0:
+                break
             hash.update(chunk)
     return hash.hexdigest()
 
